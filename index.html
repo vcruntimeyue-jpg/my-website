@@ -1,41 +1,515 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth bg-[#050505]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vcrunyue | 个人空间</title>
+    <title>VCRUNYUE | System & Self</title>
+    
+    <!-- 核心字体：Inter (主视觉) + JetBrains Mono (代码/数据修饰) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: '#050505',
+                        surface: '#0a0a0a',
+                        border: 'rgba(255, 255, 255, 0.08)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 基础重置与系统级设定 */
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+            /* 隐藏默认鼠标，为自定义物理光标让路 */
+            cursor: none; 
+        }
+
+        /* 隐藏原生滚动条，保持极致整洁 */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        * { scrollbar-width: none; }
+
+        /* 文本选择颜色反转 */
+        ::selection {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* --------------------------------------
+           前端物理引擎：动画与遮罩系统 
+           -------------------------------------- */
+           
+        /* 1. 元素平滑上浮揭示 */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(80px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-up.is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 2. 图片/模块的遮罩切割揭示 (Cula 核心效果) */
+        .reveal-mask {
+            clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+            transition: clip-path 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: clip-path;
+        }
+        .reveal-mask.is-revealed {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* 动画延迟序列 */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* --------------------------------------
+           背景流体与视觉修饰 
+           -------------------------------------- */
+           
+        /* 极暗的背景流体泡泡，打破死黑 */
+        @keyframes subtle-drift {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(3vw, -2vw) scale(1.05); }
+            100% { transform: translate(-2vw, 4vw) scale(0.95); }
+        }
+        .bg-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: subtle-drift 25s infinite alternate ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --------------------------------------
+           自定义物理光标 
+           -------------------------------------- */
+        #cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 8px; height: 8px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                        height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                        background-color 0.4s ease;
+        }
+        /* 当悬停在按钮或链接上时的状态 */
+        #cursor-dot.hover-state {
+            width: 60px; height: 60px;
+            background-color: rgba(255, 255, 255, 1);
+            mix-blend-mode: difference;
+        }
+    </style>
 </head>
-<body class="bg-zinc-900 text-zinc-100 min-h-screen flex items-center justify-center p-6">
-    <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[120px]">
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- 全局自定义光标 -->
+    <div id="cursor-dot"></div>
+
+    <!-- 极简导航栏 -->
+    <nav class="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference">
+        <div class="text-xl font-black tracking-tighter cursor-trigger magnetic-wrap group">
+            <span class="inline-block magnetic-inner transition-transform duration-300 group-hover:italic">VCRUNYUE.</span>
+        </div>
+        <div class="flex gap-8 text-xs font-mono font-bold tracking-widest uppercase items-center">
+            <a href="#about" class="hidden md:block text-white/50 hover:text-white transition-colors cursor-trigger">System</a>
+            <a href="#projects" class="hidden md:block text-white/50 hover:text-white transition-colors cursor-trigger">Flow</a>
+            <div class="magnetic-wrap cursor-trigger">
+                <a href="mailto:Vcrunyue@outlook.com" class="magnetic-inner inline-block px-6 py-3 bg-white text-black rounded-full hover:scale-105 transition-all duration-300 font-sans font-bold">
+                    INITIATE LINK
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 
+      ========================================
+      SECTION 01: 英雄首屏 (HERO)
+      ========================================
+    -->
+    <header class="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
         
-        <div class="md:col-span-3 md:row-span-2 bg-zinc-800 rounded-3xl p-8 flex flex-col justify-between border border-zinc-700">
-            <div>
-                <h1 class="text-4xl font-bold mb-2">Hello, 我是 Vcrunyue</h1>
-                <p class="text-zinc-400">19岁 · 大学生 · 正在构建 Campus Flow 时间规划器</p>
-            </div>
-            <div class="flex gap-4 text-xs">
-                <span class="px-3 py-1 bg-zinc-700 rounded-full">📍 California VPS (x-ui)</span>
-                <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full border border-green-500/30">System Normal</span>
-            </div>
+        <!-- 背景流光 -->
+        <div class="absolute inset-0 z-0">
+            <div class="bg-blob w-[50vw] h-[50vw] bg-indigo-600 top-1/4 left-1/4"></div>
+            <div class="bg-blob w-[40vw] h-[40vw] bg-zinc-600 bottom-1/4 right-1/4" style="animation-delay: -5s; animation-duration: 30s;"></div>
         </div>
 
-        <div class="md:col-span-1 md:row-span-2 bg-indigo-600 rounded-3xl p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform group cursor-wait">
-            <div class="text-3xl font-bold"><i class="fas fa-hourglass-half"></i></div>
-            <div>
-                <h2 class="text-xl font-bold">Campus Flow</h2>
-                <p class="text-indigo-200 text-xs mt-1">AI 课表识别开发中...</p>
+        <div class="relative z-10 text-center flex flex-col items-center px-4 w-full max-w-[90vw]">
+            <!-- 顶部微型标签 -->
+            <div class="reveal-up flex flex-col items-center gap-2 mb-8">
+                <div class="flex items-center gap-3 text-[10px] md:text-xs font-mono text-white/40 tracking-[0.3em] uppercase">
+                    <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse"></span>
+                    <span>V1.0 / STABLE BUILD</span>
+                    <span class="hidden md:inline">/</span>
+                    <span class="hidden md:inline">CALIFORNIA VPS NODE</span>
+                </div>
             </div>
+            
+            <!-- 核心大字报 -->
+            <h1 class="reveal-up delay-100 text-[11vw] md:text-[9vw] leading-[0.85] font-black tracking-tighter w-full text-center uppercase">
+                CONSTRUCTING<br>
+                <span class="text-white/30 italic">SYSTEM</span> & SELF.
+            </h1>
+            
+            <!-- 描述副标题 -->
+            <p class="reveal-up delay-200 mt-12 text-sm md:text-base text-white/40 max-w-xl mx-auto font-light tracking-wide leading-relaxed">
+                代码架构与物理肉体的双重修炼者。驻扎于硅谷节点，致力于将无序的时间与数据重构为高可用系统。
+            </p>
         </div>
 
-        <div class="md:col-span-1 bg-zinc-800 rounded-3xl flex items-center justify-center text-2xl border border-zinc-700">
-            <i class="fab fa-github"></i>
+        <!-- 底部滚动引导 -->
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 reveal-up delay-300 opacity-50">
+            <span class="text-[10px] font-mono uppercase tracking-[0.4em]">Scroll to unpack</span>
+            <div class="w-[1px] h-16 bg-gradient-to-b from-white to-transparent"></div>
         </div>
-        <div class="md:col-span-1 bg-zinc-800 rounded-3xl p-6 flex items-center justify-between border border-zinc-700 md:col-span-3">
-            <span class="text-zinc-400 uppercase text-xs tracking-widest font-bold">Contact</span>
-            <span class="font-mono text-sm">Vcrunyue@outlook.com</span>
+    </header>
+
+    <!-- 
+      ========================================
+      SECTION 02: 核心特质 (ABOUT & PHILOSOPHY)
+      ========================================
+    -->
+    <section id="about" class="w-full py-32 px-6 md:px-12 lg:px-24 border-t border-border relative z-10 bg-dark">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-16 lg:gap-32">
+            
+            <!-- 左侧：线索与锚点 -->
+            <div class="w-full lg:w-1/4 flex flex-col justify-between">
+                <div>
+                    <h2 class="reveal-up text-[10px] font-mono font-bold tracking-[0.3em] uppercase text-white/40 mb-6">01 — The Operator</h2>
+                    <div class="w-full h-[1px] bg-border reveal-up delay-100"></div>
+                </div>
+                
+                <!-- 硬核数据展示面板 -->
+                <div class="mt-12 lg:mt-0 grid grid-cols-2 gap-8 reveal-up delay-200">
+                    <div>
+                        <p class="text-[10px] font-mono text-white/30 mb-1 uppercase tracking-widest">Age / Target</p>
+                        <p class="text-xl font-bold font-mono text-white/80">19 <span class="text-white/20">|</span> DEV</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-mono text-white/30 mb-1 uppercase tracking-widest">Height / Stat</p>
+                        <p class="text-xl font-bold font-mono text-white/80">185<span class="text-xs text-white/40 ml-1">CM</span></p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-mono text-white/30 mb-1 uppercase tracking-widest">Server Node</p>
+                        <p class="text-sm font-bold font-mono text-white/80 truncate">CA-US-WEST</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-mono text-white/30 mb-1 uppercase tracking-widest">Framework</p>
+                        <p class="text-sm font-bold font-mono text-white/80 truncate">TALL / MERN</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：核心叙述 -->
+            <div class="w-full lg:w-3/4">
+                <!-- Parallax Text Container -->
+                <div class="parallax-element" data-speed="0.05">
+                    <p class="reveal-up text-2xl md:text-4xl lg:text-[42px] font-light leading-[1.3] tracking-tight text-white/90 mb-12">
+                        摒弃冗余的形容词，专注于逻辑的闭环与肌肉的撕裂。
+                        <span class="text-white/30">无论是配置复杂的网络路由，还是执行严苛的体能训练计划，底层逻辑是一致的：拆解、重构、并保证系统的高可用性。</span>
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 pt-12 border-t border-border reveal-up">
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-widest mb-4">Digital Architecture</h3>
+                            <p class="text-sm text-white/40 leading-relaxed">
+                                从底层 VPS 搭建到前端交互层渲染。熟练掌控服务器部署、网络环境配置与现代 Web 技术栈。不依赖封装好的黑盒，倾向于理解数据流转的每一行代码。
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold uppercase tracking-widest mb-4">Physical Discipline</h3>
+                            <p class="text-sm text-white/40 leading-relaxed">
+                                身体是最基础的硬件。将健身与补剂计划视为物理世界的系统维护。高强度的训练不仅雕刻肌肉，更是在重置神经元的耐受力边界。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- 
+      ========================================
+      SECTION 03: 项目矩阵 (PROJECTS)
+      ========================================
+    -->
+    <section id="projects" class="w-full py-32 px-6 md:px-12 lg:px-24 border-t border-border bg-dark overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="flex justify-between items-end mb-24 reveal-up">
+                <h2 class="text-[6vw] md:text-[4vw] font-black tracking-tighter leading-none uppercase">
+                    Deployed<br><span class="text-white/30 italic">Systems</span>
+                </h2>
+                <span class="hidden md:block text-[10px] font-mono text-white/40 tracking-[0.3em] uppercase mb-2">02 — The Work</span>
+            </div>
+            
+            <!-- 项目 1：Campus Flow (核心展示) -->
+            <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center mb-40">
+                <!-- 左侧信息区 (视差滚动慢) -->
+                <div class="lg:col-span-5 flex flex-col order-2 lg:order-1 parallax-element" data-speed="0.08">
+                    <div class="flex items-center gap-4 mb-6 reveal-up">
+                        <span class="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-[10px] font-mono uppercase tracking-widest text-white/80">Active</span>
+                        <span class="text-[10px] font-mono text-white/40 tracking-[0.2em] uppercase">Core Project</span>
+                    </div>
+                    
+                    <h3 class="text-5xl md:text-6xl font-black tracking-tighter mb-6 reveal-up">Campus<br><span class="italic text-indigo-400">Flow</span></h3>
+                    
+                    <p class="text-base text-white/50 leading-relaxed mb-10 reveal-up">
+                        基于 AI 驱动的大学时间规划引擎。它剥离了传统课表的冗余设计，将模糊的时间碎片重构为清晰、可执行的数据流。旨在彻底接管并优化大学生的时间线。
+                    </p>
+                    
+                    <!-- 磁吸按钮 -->
+                    <div class="cursor-trigger magnetic-wrap inline-block reveal-up">
+                        <div class="magnetic-inner flex items-center justify-center w-32 h-32 rounded-full border border-border hover:border-indigo-500 hover:bg-indigo-500 hover:text-white transition-all duration-500 group">
+                            <span class="text-xs font-bold tracking-widest uppercase group-hover:scale-110 transition-transform">Explore</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧视觉区 (视差滚动快 + 遮罩揭示) -->
+                <div class="lg:col-span-7 order-1 lg:order-2 parallax-element" data-speed="-0.04">
+                    <div class="w-full aspect-[4/3] bg-surface rounded-2xl overflow-hidden relative reveal-mask border border-border cursor-trigger group">
+                        <!-- 模拟项目视觉图 -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-indigo-900/30 to-transparent group-hover:scale-105 transition-transform duration-1000 ease-out"></div>
+                        <div class="absolute inset-8 border border-white/10 rounded-xl flex flex-col justify-between p-8 backdrop-blur-sm">
+                            <div class="flex justify-between items-start">
+                                <div class="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </div>
+                                <span class="text-[10px] font-mono text-white/40 tracking-widest">UI PREVIEW</span>
+                            </div>
+                            <div>
+                                <div class="w-3/4 h-4 bg-white/10 rounded-md mb-3"></div>
+                                <div class="w-1/2 h-4 bg-white/10 rounded-md mb-8"></div>
+                                <div class="flex gap-2">
+                                    <div class="w-16 h-8 bg-indigo-500/20 rounded-md border border-indigo-500/30"></div>
+                                    <div class="w-16 h-8 bg-white/5 rounded-md"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 项目 2：SIT Project (极简网格排版) -->
+            <div class="w-full border-t border-border pt-24 reveal-up">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+                    <div class="md:col-span-4">
+                        <span class="px-3 py-1 bg-surface border border-border rounded-full text-[10px] font-mono uppercase tracking-widest text-white/40 mb-4 inline-block">In Development</span>
+                        <h3 class="text-3xl font-bold tracking-tight mb-2">SIT Project</h3>
+                        <p class="text-sm text-white/40 font-mono">CLASSIFIED ARCHITECTURE</p>
+                    </div>
+                    <div class="md:col-span-6 md:col-start-7 text-sm text-white/50 leading-relaxed">
+                        目前处于底层架构设计阶段。该系统旨在探索更高效的数据同步机制与状态管理逻辑。细节参数暂不公开。
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 
+      ========================================
+      SECTION 04: 巨型页脚 (FOOTER)
+      ========================================
+    -->
+    <footer class="w-full pt-40 pb-12 px-6 md:px-12 lg:px-24 bg-[#020202] border-t border-border flex flex-col items-center justify-center text-center overflow-hidden relative">
+        
+        <!-- 背景修饰 -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+        <p class="reveal-up text-[10px] font-mono tracking-[0.4em] uppercase text-white/40 mb-12">System Output Log Ends Here</p>
+        
+        <!-- 巨型可交互名称 -->
+        <div class="cursor-trigger magnetic-wrap mb-32 group">
+            <h1 class="magnetic-inner text-[14vw] md:text-[16vw] leading-none font-black tracking-tighter transition-colors duration-500 text-white/80 group-hover:text-white group-hover:italic select-none">
+                VCRUNYUE.
+            </h1>
+        </div>
+        
+        <!-- 底部版权与状态 -->
+        <div class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-center text-[10px] text-white/30 font-mono uppercase tracking-widest border-t border-border pt-8 mt-12 gap-4">
+            <div class="flex items-center gap-4">
+                <span>© 2026</span>
+                <span class="w-1 h-1 bg-white/20 rounded-full"></span>
+                <span>All Rights Reserved</span>
+            </div>
+            <div class="flex items-center gap-4 cursor-trigger hover:text-white transition-colors">
+                <a href="https://github.com/vcrunyue" target="_blank">GITHUB REPOSITORY →</a>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-green-500/70">Server Optimal</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 
+      ========================================
+      核心 JavaScript 物理与动画引擎
+      ========================================
+    -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /* ---------------------------------------------------
+               1. 物理光标系统 (Lerp Cursor)
+               核心逻辑：通过线性插值算法，让光标产生平滑的拖拽惯性感。
+               --------------------------------------------------- */
+            const cursor = document.getElementById('cursor-dot');
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let cursorX = mouseX;
+            let cursorY = mouseY;
+            
+            // 调整灵敏度，值越小惯性越大 (0.1 - 0.2 为佳)
+            const speed = 0.15; 
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            function renderCursor() {
+                // 核心 Lerp 公式：当前位置 += (目标位置 - 当前位置) * 速度
+                cursorX += (mouseX - cursorX) * speed;
+                cursorY += (mouseY - cursorY) * speed;
+                
+                cursor.style.transform = `translate(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%))`;
+                requestAnimationFrame(renderCursor);
+            }
+            renderCursor();
+
+            // 光标交互状态监听
+            const triggers = document.querySelectorAll('.cursor-trigger');
+            triggers.forEach(trigger => {
+                trigger.addEventListener('mouseenter', () => cursor.classList.add('hover-state'));
+                trigger.addEventListener('mouseleave', () => cursor.classList.remove('hover-state'));
+            });
+
+            /* ---------------------------------------------------
+               2. 磁吸引力按钮 (Magnetic Effect)
+               核心逻辑：计算鼠标与元素中心的相对距离，施加成比例的位移。
+               --------------------------------------------------- */
+            const magneticWraps = document.querySelectorAll('.magnetic-wrap');
+            
+            magneticWraps.forEach(wrap => {
+                const inner = wrap.querySelector('.magnetic-inner');
+                
+                wrap.addEventListener('mousemove', (e) => {
+                    const rect = wrap.getBoundingClientRect();
+                    // 计算鼠标相对于元素中心的坐标
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    // 0.3 为磁吸强度系数
+                    inner.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                });
+
+                wrap.addEventListener('mouseleave', () => {
+                    // 配合 CSS transition 平滑回弹
+                    inner.style.transform = `translate(0px, 0px)`;
+                });
+            });
+
+            /* ---------------------------------------------------
+               3. 视差滚动系统 (Parallax Scrolling)
+               核心逻辑：基于窗口滚动高度，对特定元素进行 translateY 偏移。
+               --------------------------------------------------- */
+            const parallaxElements = document.querySelectorAll('.parallax-element');
+            let currentScrollY = window.scrollY;
+            let ticking = false;
+
+            function updateParallax() {
+                parallaxElements.forEach(el => {
+                    // 获取在 HTML 中定义的视差速率
+                    const speed = el.getAttribute('data-speed') || 0.05;
+                    
+                    // 仅当元素在视口内时计算，节省性能
+                    const rect = el.getBoundingClientRect();
+                    if(rect.top < window.innerHeight && rect.bottom > 0) {
+                        // 基于元素距离视口中心的偏移量计算视差
+                        const yPos = (window.innerHeight - rect.top) * speed;
+                        el.style.transform = `translateY(${-yPos}px)`;
+                    }
+                });
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', () => {
+                currentScrollY = window.scrollY;
+                if (!ticking) {
+                    window.requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            });
+
+            /* ---------------------------------------------------
+               4. 高级滚动揭示 (Intersection Observer)
+               核心逻辑：监控元素是否进入视口，进入则添加揭示类名。
+               --------------------------------------------------- */
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -10% 0px', // 元素进入视口底部上方 10% 时触发
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-revealed');
+                        // 触发后立即取消监听，保证后续滚动性能
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            // 批量监听所有需要动画的元素
+            document.querySelectorAll('.reveal-up, .reveal-mask').forEach(el => {
+                observer.observe(el);
+            });
+
+            /* ---------------------------------------------------
+               5. 首屏初始化动画
+               --------------------------------------------------- */
+            window.onload = () => {
+                setTimeout(() => {
+                    // 强行触发首屏元素的动画
+                    document.querySelectorAll('header .reveal-up').forEach(el => {
+                        el.classList.add('is-revealed');
+                    });
+                }, 100);
+                
+                // 初始化执行一次视差计算
+                updateParallax();
+            };
+        });
+    </script>
 </body>
 </html>
