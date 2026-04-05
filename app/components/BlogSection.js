@@ -2,42 +2,41 @@
 
 import RevealSection from "./RevealSection";
 
-const CARD_VARIANTS = [
-  {
-    bgClass: "bg-green-800",
-  },
-  {
-    bgClass: "bg-pink-800",
-  },
-  {
-    bgClass: "bg-indigo-800",
-  },
-  {
-    bgClass: "bg-blue-800",
-  },
-  {
-    bgClass: "bg-purple-700",
-  },
-  {
-    bgClass: "bg-teal-800",
-  },
-];
+const CATEGORY_ORDER = ["AI", "Web3", "网络基础", "电脑装机", "运动健身", "营养补剂"];
 
-const CATEGORY_COLORS = {
-  AI: "bg-sky-500",
-  Web3: "bg-rose-700",
-  网络基础: "bg-blue-800",
-  电脑装机: "bg-teal-800",
-  运动健身: "bg-green-800",
-  营养补剂: "bg-red-700",
+const CATEGORY_STYLES = {
+  AI: {
+    background: "linear-gradient(100deg, #2f7ae5 0%, #4c9ff2 58%, #79c6ff 100%)",
+    borderColor: "#8bd0ff",
+  },
+  Web3: {
+    background: "linear-gradient(100deg, #8f1f57 0%, #ab2965 55%, #c63f7e 100%)",
+    borderColor: "#d86ca0",
+  },
+  网络基础: {
+    background: "linear-gradient(100deg, #2f3fa4 0%, #3d4eb9 55%, #4f62ca 100%)",
+    borderColor: "#7486de",
+  },
+  电脑装机: {
+    background: "linear-gradient(100deg, #1f5961 0%, #2a6f77 55%, #3a848e 100%)",
+    borderColor: "#61a7b0",
+  },
+  运动健身: {
+    background: "linear-gradient(100deg, #1f6a48 0%, #2f7f58 55%, #3f8f66 100%)",
+    borderColor: "#62a985",
+  },
+  营养补剂: {
+    background: "linear-gradient(100deg, #991b1b 0%, #b91c1c 55%, #dc2626 100%)",
+    borderColor: "#ef6b6b",
+  },
 };
 
-function getCategoryColor(category, fallbackIndex) {
-  if (category && CATEGORY_COLORS[category]) {
-    return CATEGORY_COLORS[category];
+function getCategoryStyle(category, fallbackIndex) {
+  if (category && CATEGORY_STYLES[category]) {
+    return CATEGORY_STYLES[category];
   }
 
-  return CARD_VARIANTS[fallbackIndex % CARD_VARIANTS.length].bgClass;
+  return CATEGORY_STYLES[CATEGORY_ORDER[fallbackIndex % CATEGORY_ORDER.length]];
 }
 
 function formatDate(input) {
@@ -48,7 +47,7 @@ function formatDate(input) {
   });
 }
 
-function ensureMinItems(row, fallback, minCount = 6) {
+function ensureMinItems(row, fallback, minCount = 4) {
   if (!fallback.length) {
     return [];
   }
@@ -66,20 +65,45 @@ function ensureMinItems(row, fallback, minCount = 6) {
 }
 
 function splitRows(posts = []) {
-  const rowOne = posts.filter((_, index) => index % 3 === 0);
-  const rowTwo = posts.filter((_, index) => index % 3 === 1);
-  const rowThree = posts.filter((_, index) => index % 3 === 2);
+  const grouped = posts.reduce((result, post) => {
+    const key = post.category;
+
+    if (!result[key]) {
+      result[key] = [];
+    }
+
+    result[key].push(post);
+    return result;
+  }, {});
+  const rows = [[], [], []];
+
+  CATEGORY_ORDER.forEach((category, categoryIndex) => {
+    const categoryPosts = grouped[category] || [];
+
+    categoryPosts.forEach((post, postIndex) => {
+      rows[(categoryIndex + postIndex) % rows.length].push(post);
+    });
+  });
+
+  const leftovers = posts.filter((post) => !CATEGORY_ORDER.includes(post.category));
+
+  leftovers.forEach((post, index) => {
+    rows[index % rows.length].push(post);
+  });
 
   return {
-    rowOne: ensureMinItems(rowOne, posts, 5),
-    rowTwo: ensureMinItems(rowTwo, posts, 5),
-    rowThree: ensureMinItems(rowThree, posts, 5),
+    rowOne: ensureMinItems(rows[0], posts, 4),
+    rowTwo: ensureMinItems(rows[1], posts, 4),
+    rowThree: ensureMinItems(rows[2], posts, 4),
   };
 }
 
 function MarqueeBlogCard({ post, palette }) {
   return (
-    <article className={`h-full w-[350px] max-w-full relative rounded-2xl border border-b-0 border-slate-700 px-8 py-6 md:w-[450px] overflow-hidden flex flex-col gap-3 ${palette.bgClass}`}>
+    <article
+      className="h-full w-[350px] max-w-full relative rounded-2xl border border-b-0 px-8 py-6 md:w-[450px] overflow-hidden flex flex-col gap-3"
+      style={{ backgroundImage: palette.background, borderColor: palette.borderColor }}
+    >
       <div
         aria-hidden="true"
         className="absolute inset-0 w-full h-full scale-[1.2] transform opacity-10 [mask-image:radial-gradient(#fff,transparent,75%)]"
@@ -108,15 +132,10 @@ function MarqueeRow({ rowPosts, direction, rowIndex }) {
   const directionClass = direction === "right" ? "scroller-track-right" : "scroller-track-left";
 
   return (
-    <div
-      className="scroller relative z-20 overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]"
-      aria-label="博客滚动列表"
-    >
-      <ul className={`flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap hover:[animation-play-state:paused] ${directionClass}`}>
+    <div className="scroller scroller-soft-mask relative z-20 overflow-hidden" aria-label="博客滚动列表">
+      <ul className={`scroller-track flex min-w-full shrink-0 gap-4 py-2 w-max flex-nowrap hover:[animation-play-state:paused] ${directionClass}`}>
         {duplicated.map((post, index) => {
-          const palette = {
-            bgClass: getCategoryColor(post.category, index + rowIndex),
-          };
+          const palette = getCategoryStyle(post.category, index + rowIndex);
 
           return (
             <li key={`${post.title}-${rowIndex}-${index}`} className="shrink-0">
@@ -135,14 +154,14 @@ export default function BlogSection({ posts }) {
   return (
     <RevealSection id="blog" className="w-full px-4 lg:px-16 xl:px-32 2xl:px-44 relative z-10 my-24 lg:my-32">
       <div className="w-full">
-        <div className="mb-12 lg:mb-16 flex flex-col gap-4">
+        <div className="mb-8 lg:mb-10 flex flex-col gap-4">
           <h2 className="text-orange-400 text-5xl xl:text-6xl font-semibold">博客</h2>
           <p className="text-xl text-slate-600 max-w-4xl mt-2">
             记录我的思考、学习和创作过程，包含AI、Web3、网络基础、电脑装机、运动健身、营养补剂等等
           </p>
         </div>
 
-        <div className="grid gap-4 mt-4">
+        <div className="grid mt-2" style={{ gap: "0.75rem" }}>
           <MarqueeRow rowPosts={rowOne} direction="right" rowIndex={0} />
           <MarqueeRow rowPosts={rowTwo} direction="left" rowIndex={1} />
           <MarqueeRow rowPosts={rowThree} direction="right" rowIndex={2} />
