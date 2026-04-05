@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Font Style Preview</title>
+    <!-- 引入 Inter 和 Noto Sans SC -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9f9f9;
+            color: #111;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-weight: 700;
+            font-size: 32px;
+            margin-bottom: 24px;
+            color: #1a1a1a;
+        }
+        p {
+            line-height: 1.7;
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #888;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .example-box {
+            border-left: 4px solid #fb923c;
+            padding-left: 20px;
+            margin: 30px 0;
+        }
+        .weight-bold { font-weight: 700; }
+        .weight-medium { font-weight: 500; }
+        .weight-light { font-weight: 300; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span class="label">UI 排版预览 (Inter + Noto Sans SC)</span>
+        <h1>欢迎来到 VCRUNYUE 的主页</h1>
+        
+        <p>这是 Claude 风格的中文排版。它采用了<b>思源黑体</b>作为基础，具有极高的可读性和现代感。无论是在视网膜屏幕还是普通显示器上，都能保持一种沉稳而不失灵动的质感。</p>
+
+        <div class="example-box">
+            <span class="label">字重展示 (Weights)</span>
+            <p class="weight-bold">这是粗体 (Bold 700) —— 用于标题和强调。</p>
+            <p class="weight-medium">这是中文字重 (Medium 500) —— 适合正文小标题。</p>
+            <p class="weight-regular">这是常规字重 (Regular 400) —— 也就是 Claude 回答中最常见的质感。</p>
+            <p class="weight-light">这是细体 (Light 300) —— 适合副标题或说明文字。</p>
+        </div>
+
+        <p style="color: #666; font-style: italic;">
+            提示：这种字体组合在处理汉字与拉丁数字、标点符号的混排时非常出色，正如您在 Claude 界面中所看到的那样。
+        </p>
+    </div>
+</body>
+</html>

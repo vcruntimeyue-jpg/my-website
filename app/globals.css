@@ -1,0 +1,185 @@
+/* ── 样式层级说明 ──
+   1. 首先引入原站 compiled-css 作为底层
+   2. 随后引入或定义 1.0 版本的核心样式，确保 1.0 组件 (Navbar/Hero) 拥有最高优先级
+   ────────────────── */
+
+/* 引入原站编译后的 Tailwind v3 + 基础样式 */
+@import url('./original-tailwind.css');
+
+/* Google Fonts (Restored for 1.0) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Outfit:wght@900&display=swap');
+
+/* ============================================
+   全局重置与 1.0 基础样式 (强制覆盖原站可能存在的冲突)
+   ============================================ */
+html {
+  scroll-behavior: smooth !important;
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  background-color: #f8fafc !important; /* slate-50 */
+  color: #334155 !important;             /* slate-700 */
+  overflow-x: hidden !important;
+}
+
+a:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================
+   1.0 核心组件样式 (强制优先)
+   ============================================ */
+
+/* Logo 字体 */
+.font-fantasy {
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* 轨道公转动画 (Orbits) */
+@keyframes orbitSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes orbitCounterSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+@keyframes borderSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* 跳动 Scroll 指示器 (Bounce) */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite !important;
+}
+
+/* ============================================
+   保留原站板块所需的额外动效 (Scroller 等)
+   ============================================ */
+.scroller ul {
+  animation: scroll-left 60s linear infinite !important;
+}
+
+@keyframes scroll-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scroll-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.scroller-track-left {
+  animation: scroll-left 60s linear infinite !important;
+}
+
+.scroller-track-right {
+  animation: scroll-right 60s linear infinite !important;
+}
+
+@keyframes blog-marquee-row-1 {
+  0% { transform: translateX(calc(-50% - 0.75rem)); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes blog-marquee-row-2 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 0.75rem)); }
+}
+
+.blog-scroller {
+  position: relative;
+  z-index: 20;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, white 9%, white 91%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, white 9%, white 91%, transparent);
+}
+
+.blog-scroller-track {
+  display: flex;
+  min-width: 100%;
+  width: max-content;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+  padding: 0.25rem 0;
+  will-change: transform;
+}
+
+.blog-scroller-track-row-1 {
+  animation: blog-marquee-row-1 58s linear infinite !important;
+}
+
+.blog-scroller-track-row-2 {
+  animation: blog-marquee-row-2 64s linear infinite !important;
+}
+
+.blog-scroller-track:hover {
+  animation-play-state: paused !important;
+}
+
+/* 修正 SVG 显示 (防止原站样式将其隐藏或变形) */
+svg {
+  display: unset !important;
+  vertical-align: unset !important;
+}
+
+/* 保留原站卡片的 Hover 遮罩效果 */
+.link_decoration {
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+/* 背景颜色类 */
+.accentLightBg {
+  background-color: #f1f5f9 !important; /* slate-100 */
+}
+
+.accentWhiteBg {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important; /* slate-200 */
+}
+
+.accentDarkBg {
+  background-color: #1e293b !important; /* slate-800 */
+  color: #f8fafc !important; /* slate-50 */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-scroller-track-row-1 {
+    animation-duration: 58s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .blog-scroller-track-row-2 {
+    animation-duration: 64s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
