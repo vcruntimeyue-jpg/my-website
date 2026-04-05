@@ -23,6 +23,24 @@ const CARD_VARIANTS = [
   },
 ];
 
+const CATEGORY_COLORS = {
+  AI: "bg-indigo-800",
+  Web3: "bg-purple-700",
+  网络基础: "bg-blue-800",
+  电脑装机: "bg-teal-800",
+  运动健身: "bg-green-800",
+  营养补剂: "bg-pink-800",
+  数字游牧: "bg-slate-700",
+};
+
+function getCategoryColor(category, fallbackIndex) {
+  if (category && CATEGORY_COLORS[category]) {
+    return CATEGORY_COLORS[category];
+  }
+
+  return CARD_VARIANTS[fallbackIndex % CARD_VARIANTS.length].bgClass;
+}
+
 function formatDate(input) {
   return new Date(input).toLocaleDateString("zh-CN", {
     year: "numeric",
@@ -97,7 +115,9 @@ function MarqueeRow({ rowPosts, direction, rowIndex }) {
     >
       <ul className={`flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap hover:[animation-play-state:paused] ${directionClass}`}>
         {duplicated.map((post, index) => {
-          const palette = CARD_VARIANTS[(index + rowIndex) % CARD_VARIANTS.length];
+          const palette = {
+            bgClass: getCategoryColor(post.category, index + rowIndex),
+          };
 
           return (
             <li key={`${post.title}-${rowIndex}-${index}`} className="shrink-0">
@@ -116,16 +136,16 @@ export default function BlogSection({ posts }) {
   return (
     <RevealSection id="blog" className="w-full px-4 lg:px-16 xl:px-32 2xl:px-44 relative z-10 my-24 lg:my-32">
       <div className="w-full">
-        <div className="mb-16 lg:mb-20 flex flex-col gap-4">
+        <div className="mb-12 lg:mb-16 flex flex-col gap-4">
           <h2 className="text-orange-400 text-5xl xl:text-6xl font-semibold">博客</h2>
           <p className="text-xl text-slate-600 max-w-4xl mt-2">
             记录我的思考、学习和创作过程，包含AI、Web3、网络基础、电脑装机、运动健身、营养补剂等等
           </p>
         </div>
 
-        <div className="grid gap-6 mt-6">
+        <div className="grid gap-6 mt-4">
           <MarqueeRow rowPosts={rowOne} direction="right" rowIndex={0} />
-          <MarqueeRow rowPosts={rowTwo} direction="left" rowIndex={1} />
+          <MarqueeRow rowPosts={rowTwo} direction="right" rowIndex={1} />
           <MarqueeRow rowPosts={rowThree} direction="right" rowIndex={2} />
         </div>
       </div>
