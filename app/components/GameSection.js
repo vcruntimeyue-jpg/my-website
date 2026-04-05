@@ -22,7 +22,7 @@ export default function GameSection({ items }) {
           </p>
         </div>
 
-        <div className="mt-5">
+        <div className="mt-5 game-grid-shell">
           <GameGallery items={items} variant="home" />
         </div>
       </div>

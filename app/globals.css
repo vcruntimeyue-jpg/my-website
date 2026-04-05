@@ -196,6 +196,14 @@ svg {
   word-spacing: 0.18em;
 }
 
+.game-grid-shell {
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(241, 245, 249, 0.95) 0%, rgba(226, 232, 240, 0.78) 100%);
+  box-shadow:
+    0 34px 68px -38px rgba(15, 23, 42, 0.45),
+    0 14px 30px -22px rgba(15, 23, 42, 0.26);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
