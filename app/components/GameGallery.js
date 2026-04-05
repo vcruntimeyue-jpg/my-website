@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 function sortFeaturedGames(items) {
   return items
     .filter((item) => item.featuredOnHome)
@@ -15,13 +13,11 @@ function getDisplayItems(items, variant) {
 function GamePoster({ item }) {
   if (item.cover) {
     return (
-      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[20px] bg-slate-100">
-        <Image
+      <div className="w-full overflow-hidden bg-slate-100" style={{ aspectRatio: "16 / 9" }}>
+        <img
           src={item.cover}
           alt={`${item.title} poster`}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          className="object-cover"
+          className="block h-full w-full object-cover"
           loading="lazy"
         />
       </div>
@@ -31,22 +27,22 @@ function GamePoster({ item }) {
   return (
     <div
       aria-hidden="true"
-      className="aspect-[16/9] w-full rounded-[20px]"
-      style={{ background: item.posterColor }}
+      className="w-full"
+      style={{ aspectRatio: "16 / 9", background: item.posterColor }}
     />
   );
 }
 
 function GameCard({ item }) {
   return (
-    <article className="h-full overflow-hidden rounded-[26px] p-2 accentSoftCard">
+    <article className="h-full overflow-hidden p-3 accentSoftCard md:p-4">
       <GamePoster item={item} />
-      <div className="flex min-h-[156px] flex-col justify-between px-4 pb-5 pt-4 md:px-5 md:pb-6">
-        <div className="space-y-3">
-          <h3 className="game-title-spacing line-clamp-2 min-h-[3.35rem] font-fantasy text-[1.75rem] leading-[0.96] text-slate-800">
+      <div className="flex min-h-[220px] flex-col justify-start px-3 pb-8 pt-5 md:px-4 md:pb-10 md:pt-6">
+        <div className="space-y-4">
+          <h3 className="game-title-spacing line-clamp-2 min-h-[4.1rem] font-fantasy text-[2rem] leading-[1.02] text-slate-800 md:text-[2.25rem]">
             {item.title}
           </h3>
-          <p className="line-clamp-3 text-sm leading-6 text-slate-600">{item.summary}</p>
+          <p className="line-clamp-4 pr-2 text-base leading-7 text-slate-600 md:pr-4">{item.summary}</p>
         </div>
       </div>
     </article>
