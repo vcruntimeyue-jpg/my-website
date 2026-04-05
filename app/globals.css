@@ -101,25 +101,37 @@ a:focus-visible {
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(255, 255, 255, 0.12) 5%,
-    rgba(255, 255, 255, 0.55) 11%,
-    white 18%,
-    white 82%,
-    rgba(255, 255, 255, 0.55) 89%,
-    rgba(255, 255, 255, 0.12) 95%,
+    rgba(255, 255, 255, 0.2) 4%,
+    white 10%,
+    white 90%,
+    rgba(255, 255, 255, 0.2) 96%,
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(255, 255, 255, 0.12) 5%,
-    rgba(255, 255, 255, 0.55) 11%,
-    white 18%,
-    white 82%,
-    rgba(255, 255, 255, 0.55) 89%,
-    rgba(255, 255, 255, 0.12) 95%,
+    rgba(255, 255, 255, 0.2) 4%,
+    white 10%,
+    white 90%,
+    rgba(255, 255, 255, 0.2) 96%,
     transparent 100%
   );
+}
+
+.scroller-track:hover {
+  animation-play-state: paused !important;
+}
+
+.scroller-track:focus-within {
+  animation-play-state: paused !important;
+}
+
+.scroller-phase-a {
+  animation-delay: -8s !important;
+}
+
+.scroller-phase-b {
+  animation-delay: -33s !important;
 }
 
 @keyframes blog-marquee-row-1 {

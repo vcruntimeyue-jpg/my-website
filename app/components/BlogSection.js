@@ -6,27 +6,27 @@ const CATEGORY_ORDER = ["AI", "Web3", "网络基础", "电脑装机", "运动健
 
 const CATEGORY_STYLES = {
   AI: {
-    background: "linear-gradient(100deg, #2f7ae5 0%, #4c9ff2 58%, #79c6ff 100%)",
+    backgroundColor: "#4c9ff2",
     borderColor: "#8bd0ff",
   },
   Web3: {
-    background: "linear-gradient(100deg, #8f1f57 0%, #ab2965 55%, #c63f7e 100%)",
+    backgroundColor: "#ab2965",
     borderColor: "#d86ca0",
   },
   网络基础: {
-    background: "linear-gradient(100deg, #2f3fa4 0%, #3d4eb9 55%, #4f62ca 100%)",
+    backgroundColor: "#3d4eb9",
     borderColor: "#7486de",
   },
   电脑装机: {
-    background: "linear-gradient(100deg, #1f5961 0%, #2a6f77 55%, #3a848e 100%)",
+    backgroundColor: "#2a6f77",
     borderColor: "#61a7b0",
   },
   运动健身: {
-    background: "linear-gradient(100deg, #1f6a48 0%, #2f7f58 55%, #3f8f66 100%)",
+    backgroundColor: "#2f7f58",
     borderColor: "#62a985",
   },
   营养补剂: {
-    background: "linear-gradient(100deg, #991b1b 0%, #b91c1c 55%, #dc2626 100%)",
+    backgroundColor: "#b91c1c",
     borderColor: "#ef6b6b",
   },
 };
@@ -102,7 +102,7 @@ function MarqueeBlogCard({ post, palette }) {
   return (
     <article
       className="h-full w-[350px] max-w-full relative rounded-2xl border border-b-0 px-8 py-6 md:w-[450px] overflow-hidden flex flex-col gap-3"
-      style={{ backgroundImage: palette.background, borderColor: palette.borderColor }}
+      style={{ backgroundColor: palette.backgroundColor, borderColor: palette.borderColor }}
     >
       <div
         aria-hidden="true"
@@ -127,13 +127,13 @@ function MarqueeBlogCard({ post, palette }) {
   );
 }
 
-function MarqueeRow({ rowPosts, direction, rowIndex }) {
+function MarqueeRow({ rowPosts, direction, rowIndex, phaseClass }) {
   const duplicated = [...rowPosts, ...rowPosts];
   const directionClass = direction === "right" ? "scroller-track-right" : "scroller-track-left";
 
   return (
     <div className="scroller scroller-soft-mask relative z-20 overflow-hidden" aria-label="博客滚动列表">
-      <ul className={`scroller-track flex min-w-full shrink-0 gap-4 py-2 w-max flex-nowrap hover:[animation-play-state:paused] ${directionClass}`}>
+      <ul className={`scroller-track flex min-w-full shrink-0 gap-4 py-2 w-max flex-nowrap ${directionClass} ${phaseClass}`}>
         {duplicated.map((post, index) => {
           const palette = getCategoryStyle(post.category, index + rowIndex);
 
@@ -162,9 +162,9 @@ export default function BlogSection({ posts }) {
         </div>
 
         <div className="grid mt-2" style={{ gap: "0.75rem" }}>
-          <MarqueeRow rowPosts={rowOne} direction="right" rowIndex={0} />
-          <MarqueeRow rowPosts={rowTwo} direction="left" rowIndex={1} />
-          <MarqueeRow rowPosts={rowThree} direction="right" rowIndex={2} />
+          <MarqueeRow rowPosts={rowOne} direction="right" rowIndex={0} phaseClass="scroller-phase-a" />
+          <MarqueeRow rowPosts={rowTwo} direction="left" rowIndex={1} phaseClass="scroller-phase-a" />
+          <MarqueeRow rowPosts={rowThree} direction="right" rowIndex={2} phaseClass="scroller-phase-b" />
         </div>
       </div>
     </RevealSection>
