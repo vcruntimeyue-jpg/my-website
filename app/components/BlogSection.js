@@ -145,7 +145,7 @@ export default function BlogSection({ posts }) {
 
         <div className="grid gap-6 mt-4">
           <MarqueeRow rowPosts={rowOne} direction="right" rowIndex={0} />
-          <MarqueeRow rowPosts={rowTwo} direction="right" rowIndex={1} />
+          <MarqueeRow rowPosts={rowTwo} direction="left" rowIndex={1} />
           <MarqueeRow rowPosts={rowThree} direction="right" rowIndex={2} />
         </div>
       </div>
