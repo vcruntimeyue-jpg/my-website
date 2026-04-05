@@ -19,10 +19,9 @@ export default function GameSection({ items }) {
             </p>
           </div>
 
-          <Link href="/game" className="block w-full sm:w-56 lg:w-60 lg:flex-shrink-0" aria-label="查看更多游戏">
-            <div className="rounded-[28px] bg-orange-400 px-6 py-6 text-white shadow-[0_26px_52px_-34px_rgba(249,115,22,0.7)] transition-transform duration-300 hover:-translate-y-0.5">
-              <div className="text-xs uppercase tracking-[0.26em] text-orange-50/85">Archive</div>
-              <div className="mt-5 font-fantasy text-5xl leading-none">More</div>
+          <Link href="/game" className="inline-block w-fit lg:flex-shrink-0" aria-label="查看更多游戏">
+            <div className="bg-orange-400 px-8 py-6 text-white shadow-[0_26px_52px_-34px_rgba(249,115,22,0.7)] transition-transform duration-300 hover:-translate-y-0.5 sm:px-10 sm:py-7">
+              <div className="font-fantasy text-5xl leading-none sm:text-6xl">More</div>
             </div>
           </Link>
         </div>
