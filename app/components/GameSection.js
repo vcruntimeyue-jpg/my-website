@@ -33,7 +33,7 @@ export default function GameSection({ items }) {
       <div className="w-full">
         <h2 className="text-orange-400 text-5xl xl:text-6xl font-semibold mb-4">游戏</h2>
         <p className="text-xl mb-8 text-slate-600 max-w-3xl">
-          从 Game Jam 到商业项目，再到游戏设计分析，我持续在玩法、反馈和叙事之间做实验。
+          这里整理了我达成全成就的游戏清单。从硬核的操作挑战到治愈的艺术品，它们见证了我的游戏历程。对我而言，这些不只是冰冷的数字和成就，更是陪伴我成长、带给我惊喜的珍贵回忆。
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
