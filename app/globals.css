@@ -76,7 +76,7 @@ a:focus-visible {
    保留原站板块所需的额外动效 (Scroller 等)
    ============================================ */
 .scroller ul {
-  animation: scroll-left 60s linear infinite !important;
+  will-change: transform;
 }
 
 @keyframes scroll-left {
@@ -95,6 +95,31 @@ a:focus-visible {
 
 .scroller-track-right {
   animation: scroll-right 60s linear infinite !important;
+}
+
+.scroller-soft-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 5%,
+    rgba(255, 255, 255, 0.55) 11%,
+    white 18%,
+    white 82%,
+    rgba(255, 255, 255, 0.55) 89%,
+    rgba(255, 255, 255, 0.12) 95%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 5%,
+    rgba(255, 255, 255, 0.55) 11%,
+    white 18%,
+    white 82%,
+    rgba(255, 255, 255, 0.55) 89%,
+    rgba(255, 255, 255, 0.12) 95%,
+    transparent 100%
+  );
 }
 
 @keyframes blog-marquee-row-1 {
