@@ -177,6 +177,7 @@ export const siteContent = {
       {
         title: "It Takes Two",
         summary: "纯粹为合作设计的平台冒险游戏。通过多样化的玩法，讲述了一段关于修补家庭关系的感人故事。",
+        cover: "/assets/games/it-takes-two.jpeg",
         posterColor: "linear-gradient(135deg, #f97316 0%, #fb7185 100%)",
         featuredOnHome: true,
         featuredOrder: 2,
@@ -219,13 +220,15 @@ export const siteContent = {
       {
         title: "Journey",
         summary: "艺术化的禅意冒险游戏。在无垠的沙漠中独自旅行或与陌生人偶遇，体验纯粹的情感波动。",
+        cover: "/assets/games/journey.jpeg",
         posterColor: "linear-gradient(135deg, #fbbf24 0%, #fb923c 55%, #fef3c7 100%)",
         featuredOnHome: true,
-        featuredOrder: 8,
+        featuredOrder: 9,
       },
       {
         title: "GRIS",
         summary: "绝美的平台解谜游戏。通过色彩的恢复，讲述女孩在痛苦中找回自我、克服心理创伤的过程。",
+        cover: "/assets/games/gris.jpg",
         posterColor: "linear-gradient(135deg, #d1d5db 0%, #94a3b8 55%, #fbcfe8 100%)",
         featuredOnHome: true,
         featuredOrder: 1,
@@ -233,13 +236,15 @@ export const siteContent = {
       {
         title: "ABZU",
         summary: "唯美的深海潜水游戏。探索色彩斑斓的海底世界并与数以千计的生物互动，节奏宁静且治愈。",
+        cover: "/assets/games/abzu.jpeg",
         posterColor: "linear-gradient(135deg, #0f766e 0%, #0891b2 55%, #67e8f9 100%)",
         featuredOnHome: true,
-        featuredOrder: 7,
+        featuredOrder: 8,
       },
       {
         title: "THE FINALS",
         summary: "环境可全破坏的快节奏竞技射击游戏。玩家在虚拟竞技场中组队争夺财富，极度强调地形破坏与战术搭配。",
+        cover: "/assets/games/the-finals.jpg",
         posterColor: "linear-gradient(135deg, #b91c1c 0%, #ef4444 55%, #f97316 100%)",
         featuredOnHome: true,
         featuredOrder: 3,
@@ -254,9 +259,10 @@ export const siteContent = {
       {
         title: "Patrick's Parabox",
         summary: "屡获殊荣的递归解谜游戏。将“推箱子”机制推向极致，玩家在无限循环的逻辑空间中进出箱体。",
+        cover: "/assets/games/parabox.jpeg",
         posterColor: "linear-gradient(135deg, #166534 0%, #10b981 55%, #a7f3d0 100%)",
         featuredOnHome: true,
-        featuredOrder: 6,
+        featuredOrder: 7,
       },
       {
         title: "Getting Over It with Bennett Foddy",
@@ -303,9 +309,18 @@ export const siteContent = {
       {
         title: "World of Goo",
         summary: "经典物理益智游戏。利用各种属性的“粘粘球”搭建桥梁或塔楼，通过力学设计将球送入管道。",
+        cover: "/assets/games/world-of-goo.jpeg",
         posterColor: "linear-gradient(135deg, #111827 0%, #1f2937 55%, #f59e0b 100%)",
         featuredOnHome: true,
         featuredOrder: 4,
+      },
+      {
+        title: "Sable",
+        summary: "独特的莫比乌斯画风开放世界冒险游戏。玩家扮演名为沙贝的少女，穿梭于广袤的沙漠与古老残骸之间，展开一场关于自我发现的成年礼。",
+        cover: "/assets/games/sable.jpeg",
+        posterColor: "linear-gradient(135deg, #f5d0b5 0%, #f8dcc7 55%, #fef3c7 100%)",
+        featuredOnHome: true,
+        featuredOrder: 5,
       },
       {
         title: "OUROS",
@@ -352,9 +367,10 @@ export const siteContent = {
       {
         title: "Hue",
         summary: "着色解谜平台游戏。玩家通过改变世界背景颜色使障碍物显现或消失，在灰色世界中寻找失踪的母亲。",
+        cover: "/assets/games/hue.jpeg",
         posterColor: "linear-gradient(135deg, #ef4444 0%, #f59e0b 24%, #eab308 40%, #22c55e 58%, #06b6d4 78%, #8b5cf6 100%)",
         featuredOnHome: true,
-        featuredOrder: 5,
+        featuredOrder: 6,
       },
     ],
     music: [

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Image from "next/image";
 
 function sortFeaturedGames(items) {
   return items
@@ -8,16 +8,30 @@ function sortFeaturedGames(items) {
     .sort((a, b) => (a.featuredOrder ?? Number.MAX_SAFE_INTEGER) - (b.featuredOrder ?? Number.MAX_SAFE_INTEGER));
 }
 
-function createHomeGrid(items) {
-  const featuredItems = sortFeaturedGames(items);
-  return [...featuredItems.slice(0, 4), { kind: "more", title: "More" }, ...featuredItems.slice(4)];
+function getDisplayItems(items, variant) {
+  return variant === "home" ? sortFeaturedGames(items) : items;
 }
 
 function GamePoster({ item }) {
+  if (item.cover) {
+    return (
+      <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[20px] bg-slate-100">
+        <Image
+          src={item.cover}
+          alt={`${item.title} poster`}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+          className="object-cover"
+          loading="lazy"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       aria-hidden="true"
-      className="aspect-[16/9] w-full rounded-b-none"
+      className="aspect-[16/9] w-full rounded-[20px]"
       style={{ background: item.posterColor }}
     />
   );
@@ -25,11 +39,13 @@ function GamePoster({ item }) {
 
 function GameCard({ item }) {
   return (
-    <article className="h-full overflow-hidden rounded-xl accentSoftCard">
+    <article className="h-full overflow-hidden rounded-[26px] p-2 accentSoftCard">
       <GamePoster item={item} />
-      <div className="flex min-h-[148px] flex-col justify-between p-5 md:p-6">
+      <div className="flex min-h-[156px] flex-col justify-between px-4 pb-5 pt-4 md:px-5 md:pb-6">
         <div className="space-y-3">
-          <h3 className="font-fantasy text-[1.75rem] leading-none text-slate-800">{item.title}</h3>
+          <h3 className="game-title-spacing line-clamp-2 min-h-[3.35rem] font-fantasy text-[1.75rem] leading-[0.96] text-slate-800">
+            {item.title}
+          </h3>
           <p className="line-clamp-3 text-sm leading-6 text-slate-600">{item.summary}</p>
         </div>
       </div>
@@ -37,24 +53,14 @@ function GameCard({ item }) {
   );
 }
 
-function MoreCard() {
-  return (
-    <Link href="/game" className="block h-full" aria-label="查看更多游戏">
-      <article className="flex h-full min-h-[260px] items-center justify-center rounded-xl bg-slate-800 p-6 text-white shadow-[0_24px_48px_-30px_rgba(15,23,42,0.55)] transition-colors duration-300 hover:bg-slate-700">
-        <span className="font-fantasy text-5xl tracking-tight">More</span>
-      </article>
-    </Link>
-  );
-}
-
 export default function GameGallery({ items, variant = "home" }) {
-  const displayItems = variant === "home" ? createHomeGrid(items) : items;
+  const displayItems = getDisplayItems(items, variant);
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {displayItems.map((item) =>
-        item.kind === "more" ? <MoreCard key="game-more-card" /> : <GameCard key={item.title} item={item} />
-      )}
+      {displayItems.map((item) => (
+        <GameCard key={item.title} item={item} />
+      ))}
     </div>
   );
 }
