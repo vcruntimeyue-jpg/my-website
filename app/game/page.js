@@ -3,7 +3,7 @@ import GameGallery from "../components/GameGallery";
 import { siteContent } from "../content/siteContent";
 
 export const metadata = {
-  title: "Game Archive | VCRUNYUE",
+  title: "Vcrunyue Game",
   description: "完整收录 VCRUNYUE 达成全成就的游戏清单。",
 };
 
@@ -19,8 +19,7 @@ export default function GameArchivePage() {
         </Link>
 
         <div className="mt-8 max-w-4xl">
-          <div className="mb-4 text-sm uppercase tracking-[0.24em] text-orange-500">Game Archive</div>
-          <h1 className="font-fantasy text-5xl text-slate-800 xl:text-6xl">All Perfect Games</h1>
+          <h1 className="game-title-spacing font-fantasy text-5xl text-slate-800 xl:text-6xl">All Perfect Games</h1>
           <p className="mt-6 text-lg leading-8 text-slate-600">
             这里收录了我达成全成就的完整游戏清单。从硬核挑战到治愈作品，这些游戏共同构成了我的游戏记忆。
           </p>
