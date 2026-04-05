@@ -24,13 +24,12 @@ const CARD_VARIANTS = [
 ];
 
 const CATEGORY_COLORS = {
-  AI: "bg-indigo-800",
-  Web3: "bg-purple-700",
+  AI: "bg-sky-500",
+  Web3: "bg-rose-700",
   网络基础: "bg-blue-800",
   电脑装机: "bg-teal-800",
   运动健身: "bg-green-800",
-  营养补剂: "bg-pink-800",
-  数字游牧: "bg-slate-700",
+  营养补剂: "bg-red-700",
 };
 
 function getCategoryColor(category, fallbackIndex) {
@@ -143,7 +142,7 @@ export default function BlogSection({ posts }) {
           </p>
         </div>
 
-        <div className="grid gap-6 mt-4">
+        <div className="grid gap-4 mt-4">
           <MarqueeRow rowPosts={rowOne} direction="right" rowIndex={0} />
           <MarqueeRow rowPosts={rowTwo} direction="left" rowIndex={1} />
           <MarqueeRow rowPosts={rowThree} direction="right" rowIndex={2} />
