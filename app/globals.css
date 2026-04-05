@@ -98,47 +98,8 @@ a:focus-visible {
 }
 
 .scroller-soft-mask {
-  position: relative;
-  isolation: isolate;
-}
-
-.scroller-soft-mask::before,
-.scroller-soft-mask::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: clamp(56px, 8vw, 116px);
-  pointer-events: none;
-  z-index: 30;
-}
-
-.scroller-soft-mask::before {
-  left: 0;
-  background: linear-gradient(
-    90deg,
-    #f8fafc 0%,
-    rgba(248, 250, 252, 0.98) 14%,
-    rgba(248, 250, 252, 0.88) 30%,
-    rgba(248, 250, 252, 0.7) 48%,
-    rgba(248, 250, 252, 0.45) 66%,
-    rgba(248, 250, 252, 0.2) 84%,
-    rgba(248, 250, 252, 0) 100%
-  );
-}
-
-.scroller-soft-mask::after {
-  right: 0;
-  background: linear-gradient(
-    270deg,
-    #f8fafc 0%,
-    rgba(248, 250, 252, 0.98) 14%,
-    rgba(248, 250, 252, 0.88) 30%,
-    rgba(248, 250, 252, 0.7) 48%,
-    rgba(248, 250, 252, 0.45) 66%,
-    rgba(248, 250, 252, 0.2) 84%,
-    rgba(248, 250, 252, 0) 100%
-  );
+  mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, white 20%, white 80%, transparent);
 }
 
 .scroller-track:hover {
