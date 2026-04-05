@@ -7,7 +7,7 @@ import GameSection from "./components/GameSection";
 import MusicSection from "./components/MusicSection";
 import ImagesSection from "./components/ImagesSection";
 import FavoritesSection from "./components/FavoritesSection";
-import { calculateProgress, siteContent } from "./content/siteContent";
+import { siteContent } from "./content/siteContent";
 
 const ICONS = {
   github: (
@@ -37,8 +37,6 @@ const ICONS = {
 };
 
 export default function Home() {
-  const progress = calculateProgress(siteContent.progress);
-
   return (
     <main style={{ position: "relative", overflowX: "hidden" }}>
       <Navbar
@@ -59,21 +57,7 @@ export default function Home() {
         <section id="contact" className="w-full px-4 lg:px-16 xl:px-32 2xl:px-44 relative z-10 my-36">
           <p className="text-2xl md:text-4xl max-w-5xl">
             {siteContent.site.tagline}
-            <span
-              className="relative inline-block pb-1 px-1 rounded-lg bg-gradient-to-r from-orange-300 to-orange-300 text-black"
-              style={{ backgroundRepeat: "no-repeat", backgroundPosition: "left center", display: "inline", backgroundSize: "0% 100%" }}
-            >
-              {siteContent.site.taglineHighlight}
-            </span>
           </p>
-
-          <div className="mt-8 accentWhiteBg rounded-2xl p-6 border border-slate-200/70 max-w-3xl">
-            <div className="text-sm uppercase tracking-wider text-slate-500 mb-2">路线进度</div>
-            <div className="text-3xl font-fantasy text-orange-500 mb-3">{progress}%</div>
-            <p className="text-slate-600 text-sm leading-6">
-              计算规则：总进度 = 每个阶段权重 × 阶段完成率。当前已完成内容建模、模块落地、SEO 与验收；发布监控保留最后一步上线执行。
-            </p>
-          </div>
         </section>
 
         <footer className="my-32 pt-4 text-center font-fantasy text-2xl text-gray-400">
