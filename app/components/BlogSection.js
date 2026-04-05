@@ -157,7 +157,7 @@ export default function BlogSection({ posts }) {
         <div className="mb-8 lg:mb-10 flex flex-col gap-4">
           <h2 className="text-orange-400 text-5xl xl:text-6xl font-semibold">博客</h2>
           <p className="text-xl text-slate-600 max-w-4xl mt-2">
-            记录我的思考、学习和创作过程，包含AI、Web3、网络基础、电脑装机、运动健身、营养补剂等等
+            记录我的思考、学习和创作过程，包含AI、Web3、网络基础、电脑装机、运动健身、营养补剂等等。
           </p>
         </div>
 
