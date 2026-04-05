@@ -186,10 +186,10 @@ svg {
 
 .accentSoftCard {
   background: #ffffff !important;
-  border: 1px solid rgba(148, 163, 184, 0.4) !important;
+  border: none !important;
   box-shadow:
-    0 18px 40px -24px rgba(15, 23, 42, 0.34),
-    0 8px 18px -12px rgba(15, 23, 42, 0.2);
+    0 26px 52px -30px rgba(15, 23, 42, 0.42),
+    0 12px 24px -18px rgba(15, 23, 42, 0.3);
 }
 
 .game-title-spacing {
