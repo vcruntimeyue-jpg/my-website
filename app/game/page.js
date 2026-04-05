@@ -25,7 +25,7 @@ export default function GameArchivePage() {
           </p>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-5">
           <GameGallery items={siteContent.sections.game} variant="archive" />
         </div>
       </section>
