@@ -188,8 +188,8 @@ svg {
   background: #ffffff !important;
   border: none !important;
   box-shadow:
-    0 26px 52px -30px rgba(15, 23, 42, 0.42),
-    0 12px 24px -18px rgba(15, 23, 42, 0.3);
+    0 14px 30px -20px rgba(15, 23, 42, 0.26),
+    0 0 18px -12px rgba(15, 23, 42, 0.18);
 }
 
 .game-title-spacing {
