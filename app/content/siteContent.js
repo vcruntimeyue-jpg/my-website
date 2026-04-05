@@ -37,7 +37,6 @@ export const siteContent = {
     },
   ],
   navLinks: [
-    { label: "关于我", href: "#home" },
     { label: "博客", href: "#blog" },
     { label: "游戏", href: "#game" },
     { label: "音乐", href: "#music" },
