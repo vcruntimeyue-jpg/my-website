@@ -35,7 +35,7 @@ function GamePoster({ item }) {
 
 function GameCard({ item }) {
   return (
-    <article className="h-full overflow-hidden p-5 accentSoftCard md:p-6">
+    <article className="game-card h-full overflow-hidden p-5 accentSoftCard md:p-6">
       <GamePoster item={item} />
       <div className="flex min-h-[236px] flex-col justify-start px-2 pb-9 pt-6 md:px-3 md:pb-11 md:pt-7">
         <div className="space-y-4">
@@ -53,7 +53,7 @@ export default function GameGallery({ items, variant = "home" }) {
   const displayItems = getDisplayItems(items, variant);
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <div className="game-card-grid grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
       {displayItems.map((item) => (
         <GameCard key={item.title} item={item} />
       ))}
