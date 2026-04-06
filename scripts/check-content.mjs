@@ -2,10 +2,7 @@ import { navLinks, socialLinks } from "../app/content/navigation.js";
 import { getFeaturedGames } from "../app/content/presentation.js";
 import { progress } from "../app/content/progress.js";
 import { BLOG_CATEGORIES, NAV_ANCHORS, PROGRESS_STATUSES } from "../app/content/schema.js";
-import { favoriteGroups } from "../app/content/sections/favorites.js";
 import { gameEntries } from "../app/content/sections/game.js";
-import { imageEntries } from "../app/content/sections/images.js";
-import { musicEntries } from "../app/content/sections/music.js";
 import { blogPosts } from "../app/content/sections/blog.js";
 import { site } from "../app/content/site.js";
 import {
@@ -27,9 +24,6 @@ function checkPlaceholders() {
       navLinks,
       blogPosts,
       gameEntries,
-      musicEntries,
-      imageEntries,
-      favoriteGroups,
       progress,
     },
     (value, fieldPath) => {
@@ -157,58 +151,6 @@ function checkGames() {
   });
 }
 
-function checkMusic() {
-  assertArray(errors, musicEntries, "sections.music");
-  assertUnique(errors, musicEntries.map((item) => item.title), "sections.music.title");
-
-  musicEntries.forEach((item, index) => {
-    assertRequiredText(errors, item.title, `sections.music[${index}].title`);
-    assertRequiredText(errors, item.summary, `sections.music[${index}].summary`);
-    assertRequiredText(errors, item.cover, `sections.music[${index}].cover`);
-    assertHttpsUrl(item.url, `sections.music[${index}].url`);
-  });
-}
-
-function checkImages() {
-  assertArray(errors, imageEntries, "sections.images");
-  assertUnique(errors, imageEntries.map((item) => item.title), "sections.images.title");
-
-  imageEntries.forEach((item, index) => {
-    assertRequiredText(errors, item.title, `sections.images[${index}].title`);
-    assertRequiredText(errors, item.desc, `sections.images[${index}].desc`);
-    assertRequiredText(errors, item.image, `sections.images[${index}].image`);
-    assertRequiredText(errors, item.category, `sections.images[${index}].category`);
-    assertHttpsUrl(item.url, `sections.images[${index}].url`);
-  });
-}
-
-function checkFavorites() {
-  assertArray(errors, favoriteGroups, "sections.favorites");
-  assertUnique(errors, favoriteGroups.map((group) => group.group), "sections.favorites.group");
-
-  favoriteGroups.forEach((group, groupIndex) => {
-    assertRequiredText(errors, group.group, `sections.favorites[${groupIndex}].group`);
-
-    if (!assertArray(errors, group.items, `sections.favorites[${groupIndex}].items`)) {
-      return;
-    }
-
-    assertUnique(
-      errors,
-      group.items.map((item) => item.title),
-      `sections.favorites[${groupIndex}].items.title`,
-    );
-
-    group.items.forEach((item, itemIndex) => {
-      assertRequiredText(errors, item.title, `sections.favorites[${groupIndex}].items[${itemIndex}].title`);
-      assertRequiredText(errors, item.subtitle, `sections.favorites[${groupIndex}].items[${itemIndex}].subtitle`);
-      assertRequiredText(errors, item.desc, `sections.favorites[${groupIndex}].items[${itemIndex}].desc`);
-      assertRequiredText(errors, item.cover, `sections.favorites[${groupIndex}].items[${itemIndex}].cover`);
-      assertHttpsUrl(item.url, `sections.favorites[${groupIndex}].items[${itemIndex}].url`);
-    });
-  });
-}
-
 function checkProgress() {
   assertArray(errors, progress, "progress");
   assertUnique(errors, progress.map((item) => item.id), "progress.id");
@@ -232,9 +174,6 @@ checkSite();
 checkNavigation();
 checkBlog();
 checkGames();
-checkMusic();
-checkImages();
-checkFavorites();
 checkProgress();
 
 if (errors.length > 0) {

@@ -2,7 +2,7 @@ import { siteContent } from "../app/content/siteContent.js";
 import { addError, readRepoFile } from "./lib/content-helpers.mjs";
 
 const errors = [];
-const expectedSectionKeys = ["blog", "game", "music", "images", "favorites"];
+const expectedSectionKeys = ["blog", "game"];
 const actualSectionKeys = Object.keys(siteContent.sections);
 
 if (expectedSectionKeys.join(",") !== actualSectionKeys.join(",")) {
@@ -44,9 +44,9 @@ const allowedClientEntries = new Set([
 [
   'BlogSection posts={siteContent.sections.blog}',
   'GameSection items={siteContent.sections.game}',
-  'MusicSection items={siteContent.sections.music}',
-  'ImagesSection items={siteContent.sections.images}',
-  'FavoritesSection groups={siteContent.sections.favorites}',
+  '<MusicSection />',
+  '<ImagesSection />',
+  '<FavoritesSection />',
 ].forEach((needle) => {
   if (!pageSource.includes(needle)) {
     addError(errors, `app/page.js is missing section wiring: ${needle}`);
@@ -65,16 +65,16 @@ if (!socialLinksSource.includes("SocialIcon")) {
   addError(errors, "SocialLinks must consume the shared SocialIcon registry");
 }
 
-if (!musicSectionSource.includes("items.map")) {
-  addError(errors, "MusicSection must render its items prop");
+if (musicSectionSource.includes("items.map") || musicSectionSource.includes("data-track={`music:")) {
+  addError(errors, "MusicSection should be intro-only");
 }
 
-if (!imagesSectionSource.includes("items.map")) {
-  addError(errors, "ImagesSection must render its items prop");
+if (imagesSectionSource.includes("items.map") || imagesSectionSource.includes("data-track={`image:")) {
+  addError(errors, "ImagesSection should be intro-only");
 }
 
-if (!favoritesSectionSource.includes("groups.map")) {
-  addError(errors, "FavoritesSection must render its groups prop");
+if (favoritesSectionSource.includes("groups.map") || favoritesSectionSource.includes("data-track={`favorite:")) {
+  addError(errors, "FavoritesSection should be intro-only");
 }
 
 if (!gameGallerySource.includes("getGameDisplayItems")) {

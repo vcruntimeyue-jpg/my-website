@@ -18,15 +18,9 @@
 1. 把图片放进对应目录：
    - 博客：`public/assets/blog`
    - 游戏：`public/assets/games`
-   - 音乐：`public/assets/music`
-   - 图片：`public/assets/images`
-   - 收藏：`public/assets/favorites/books` 或 `movies`
 2. 回到对应模块，把 `cover` 或 `image` 改成新路径：
    - 博客：`app/content/sections/blog.js`
    - 游戏：`app/content/sections/game.js`
-   - 音乐：`app/content/sections/music.js`
-   - 图片：`app/content/sections/images.js`
-   - 收藏：`app/content/sections/favorites.js`
 3. 运行 `npm run verify`
 
 ## 3) 改社交链接

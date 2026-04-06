@@ -9,7 +9,8 @@
 - `app/components/`: 页面组件与共享渲染单元
 - `app/content/site.js`: 站点元信息
 - `app/content/navigation.js`: 导航与社交链接
-- `app/content/sections/*.js`: 各内容域数据
+- `app/content/sections/blog.js`: 博客数据
+- `app/content/sections/game.js`: 游戏数据
 - `app/content/siteContent.js`: 聚合出口，兼容页面与脚本消费
 - `app/content/presentation.js`: 展示规则
 - `scripts/`: 内容、资源、结构守卫脚本
@@ -29,9 +30,6 @@ npm run verify
 
 - 博客：`app/content/sections/blog.js`
 - 游戏：`app/content/sections/game.js`
-- 音乐：`app/content/sections/music.js`
-- 图片：`app/content/sections/images.js`
-- 收藏：`app/content/sections/favorites.js`
 - 导航/社交：`app/content/navigation.js`
 - 站点标题、域名、文案：`app/content/site.js`
 
