@@ -76,7 +76,7 @@ export const gameEntries = [
   },
   {
     title: "THE FINALS",
-    summary: "环境可全破坏的快节奏竞技射击游戏。玩家在虚拟竞技场中组队争夺财富，极度强调地形破坏与战术搭配。",
+    summary: "全场景可破坏的快节奏射击游戏。玩家在虚拟竞技场中竞技，极度强调地形破坏与战术搭配。",
     cover: "/assets/games/the-finals.jpg",
     posterColor: "linear-gradient(135deg, #b91c1c 0%, #ef4444 55%, #f97316 100%)",
     featuredOnHome: true,
