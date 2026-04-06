@@ -41,8 +41,8 @@ function checkPlaceholders() {
 }
 
 function assertHttpsUrl(url, fieldPath) {
-  if (typeof url !== "string" || !url.startsWith("https://")) {
-    addError(errors, `${fieldPath}: url must start with https://`);
+  if (typeof url !== "string" || (!url.startsWith("https://") && !url.startsWith("mailto:"))) {
+    addError(errors, `${fieldPath}: url must start with https:// or mailto:`);
   }
 }
 

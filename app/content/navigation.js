@@ -4,25 +4,19 @@ export const socialLinks = [
     platform: "GitHub",
     label: "GitHub",
     iconKey: "github",
-    url: "https://github.com/SamuelQZQ",
+    url: "https://github.com/vcrunyue",
   },
   {
-    platform: "Twitter/X",
-    label: "Twitter/X",
+    platform: "X",
+    label: "X",
     iconKey: "twitter",
-    url: "https://x.com/SamuelQZQ",
+    url: "https://x.com/runvcyue",
   },
   {
-    platform: "Bilibili",
-    label: "Bilibili",
-    iconKey: "bilibili",
-    url: "https://space.bilibili.com/4848323",
-  },
-  {
-    platform: "Douyin",
-    label: "Douyin",
-    iconKey: "tiktok",
-    url: "https://www.douyin.com/user/MS4wLjABAAAAcBGY4RqDTLberZGiFTk-nG_L0hVwrFC7Bii_20YdBgBDGu-9JoA2L6jtkpdnpBpr",
+    platform: "Gmail",
+    label: "Gmail",
+    iconKey: "gmail",
+    url: "mailto:vcruntimeyue@gmail.com",
   },
 ];
 
