@@ -1,10 +1,10 @@
 /** @type {import("./schema").SocialLink[]} */
 export const socialLinks = [
   {
-    platform: "GitHub",
-    label: "GitHub",
-    iconKey: "github",
-    url: "https://github.com/vcrunyue",
+    platform: "Gmail",
+    label: "Gmail",
+    iconKey: "gmail",
+    url: "mailto:vcruntimeyue@gmail.com",
   },
   {
     platform: "X",
@@ -13,10 +13,10 @@ export const socialLinks = [
     url: "https://x.com/runvcyue",
   },
   {
-    platform: "Gmail",
-    label: "Gmail",
-    iconKey: "gmail",
-    url: "mailto:vcruntimeyue@gmail.com",
+    platform: "GitHub",
+    label: "GitHub",
+    iconKey: "github",
+    url: "https://github.com/vcrunyue",
   },
 ];
 
