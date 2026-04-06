@@ -11,11 +11,9 @@ const TwitterIcon = () => (
 );
 
 const GmailIcon = () => (
-  <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none">
-    <path d="M3.75 6.75h2.05L12 11.77l6.2-5.02h2.05v10.5h-3.1v-6.2L12 15.16l-5.15-4.11v6.2h-3.1z" fill="#EA4335" />
-    <path d="M3.75 6.75L12 13.3l8.25-6.55v2.34L12 15.64 3.75 9.09z" fill="#FBBC04" />
-    <path d="M3.75 17.25v-10.5l3.1 2.34v8.16z" fill="#34A853" />
-    <path d="M17.15 17.25v-8.16l3.1-2.34v10.5z" fill="#4285F4" />
+  <svg aria-hidden="true" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <path d="M3 7l9 6 9-6" />
   </svg>
 );
 
