@@ -45,6 +45,17 @@ export default function Navbar({ navLinks, socialLinks, siteName }) {
           trackPrefix="social"
           linkStyle={{ fontSize: "24px", color: "#475569" }}
           linkClassName="transition-colors hover:text-orange-500"
+          getLinkStyle={(social) => {
+            if (social.iconKey === "gmail") {
+              return { position: "relative", top: "1px" };
+            }
+
+            if (social.iconKey === "twitter") {
+              return { display: "inline-flex", transform: "scale(0.97)" };
+            }
+
+            return undefined;
+          }}
         />
       </div>
 
