@@ -47,11 +47,11 @@ export default function Navbar({ navLinks, socialLinks, siteName }) {
           linkClassName="transition-colors hover:text-orange-500"
           getLinkStyle={(social) => {
             if (social.iconKey === "gmail") {
-              return { position: "relative", top: "0px" };
+              return { position: "relative", top: "2px" };
             }
 
             if (social.iconKey === "twitter") {
-              return { display: "inline-flex", transform: "scale(0.97)", position: "relative", top: "0px" };
+              return { display: "inline-flex", transform: "scale(0.97)", position: "relative", top: "-2px" };
             }
 
             return undefined;
