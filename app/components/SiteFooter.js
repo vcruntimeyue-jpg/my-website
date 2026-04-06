@@ -11,7 +11,7 @@ export default function SiteFooter({ siteName, socialLinks }) {
           linkClassName="text-gray-400 transition-colors hover:text-orange-500"
           getLinkStyle={(social) => {
             if (social.iconKey === "gmail") {
-              return { position: "relative", top: "2px" };
+              return { position: "relative", top: "-1px" };
             }
 
             if (social.iconKey === "github") {
