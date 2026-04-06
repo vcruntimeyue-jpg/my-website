@@ -1,6 +1,6 @@
 import SocialIcon from "./SocialIcon";
 
-export default function SocialLinks({ links, trackPrefix, linkClassName = "", linkStyle }) {
+export default function SocialLinks({ links, trackPrefix, linkClassName = "", linkStyle, getLinkStyle }) {
   return (
     <>
       {links.map((social) => (
@@ -11,7 +11,7 @@ export default function SocialLinks({ links, trackPrefix, linkClassName = "", li
           href={social.url}
           data-track={trackPrefix ? `${trackPrefix}:${social.label}` : undefined}
           aria-label={social.label}
-          style={linkStyle}
+          style={{ ...linkStyle, ...(getLinkStyle ? getLinkStyle(social) : null) }}
           className={linkClassName}
         >
           <SocialIcon iconKey={social.iconKey} />

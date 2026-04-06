@@ -9,6 +9,17 @@ export default function SiteFooter({ siteName, socialLinks }) {
           links={socialLinks}
           trackPrefix="footer"
           linkClassName="text-gray-400 transition-colors hover:text-orange-500"
+          getLinkStyle={(social) => {
+            if (social.iconKey === "gmail") {
+              return { position: "relative", top: "1px" };
+            }
+
+            if (social.iconKey === "github") {
+              return { position: "relative", top: "-1px" };
+            }
+
+            return undefined;
+          }}
         />
       </div>
     </footer>
