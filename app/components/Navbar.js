@@ -51,7 +51,7 @@ export default function Navbar({ navLinks, socialLinks, siteName }) {
             }
 
             if (social.iconKey === "twitter") {
-              return { display: "inline-flex", transform: "scale(0.97)" };
+              return { display: "inline-flex", transform: "scale(0.97)", position: "relative", top: "-1px" };
             }
 
             return undefined;
