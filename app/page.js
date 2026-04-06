@@ -26,7 +26,11 @@ export default function Home() {
         <ImagesSection />
         <FavoritesSection />
 
-        <section id="contact" className="w-full px-4 lg:px-16 xl:px-32 2xl:px-44 relative z-10 my-36">
+        <section
+          id="contact"
+          className="relative z-10 mt-36 w-full px-4 lg:px-16 xl:px-32 2xl:px-44"
+          style={{ marginBottom: "104px" }}
+        >
           <div className="mx-auto max-w-5xl rounded-3xl bg-orange-50 px-6 py-8 md:px-10 md:py-10 shadow-[0_10px_30px_rgba(15,23,42,0.12)] text-center">
             <p className="text-2xl md:text-4xl">
               {siteContent.site.tagline}
