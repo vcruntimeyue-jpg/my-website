@@ -1,14 +1,4 @@
-"use client";
-
-function sortFeaturedGames(items) {
-  return items
-    .filter((item) => item.featuredOnHome)
-    .sort((a, b) => (a.featuredOrder ?? Number.MAX_SAFE_INTEGER) - (b.featuredOrder ?? Number.MAX_SAFE_INTEGER));
-}
-
-function getDisplayItems(items, variant) {
-  return variant === "home" ? sortFeaturedGames(items) : items;
-}
+import { getGameDisplayItems } from "../content/presentation";
 
 function GamePoster({ item }) {
   if (item.cover) {
@@ -50,7 +40,7 @@ function GameCard({ item }) {
 }
 
 export default function GameGallery({ items, variant = "home" }) {
-  const displayItems = getDisplayItems(items, variant);
+  const displayItems = getGameDisplayItems(items, variant);
 
   return (
     <div className="game-card-grid grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">

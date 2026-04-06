@@ -1,5 +1,3 @@
-"use client";
-
 const RINGS = [
   { radius: 221, opacity: 0.55, duration: 11, iconSize: 52 },
   { radius: 291, opacity: 0.30, duration: 15, iconSize: 60 },

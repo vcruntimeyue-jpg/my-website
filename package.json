@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "check:content": "node --no-warnings scripts/check-content.mjs",
-    "verify": "npm run check:content && npm run build"
+    "check:assets": "node --no-warnings scripts/check-assets.mjs",
+    "check:structure": "node --no-warnings scripts/check-structure.mjs",
+    "verify": "npm run check:content && npm run check:assets && npm run check:structure && npm run build"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",

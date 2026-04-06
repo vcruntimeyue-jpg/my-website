@@ -1,43 +1,5 @@
-"use client";
-
-import RevealSection from "./RevealSection";
-
-const CATEGORY_ORDER = ["AI", "Web3", "网络基础", "电脑装机", "运动健身", "营养补剂"];
-
-const CATEGORY_STYLES = {
-  AI: {
-    backgroundColor: "#4c9ff2",
-    borderColor: "#8bd0ff",
-  },
-  Web3: {
-    backgroundColor: "#ab2965",
-    borderColor: "#d86ca0",
-  },
-  网络基础: {
-    backgroundColor: "#3d4eb9",
-    borderColor: "#7486de",
-  },
-  电脑装机: {
-    backgroundColor: "#2a6f77",
-    borderColor: "#61a7b0",
-  },
-  运动健身: {
-    backgroundColor: "#2f7f58",
-    borderColor: "#62a985",
-  },
-  营养补剂: {
-    backgroundColor: "#b91c1c",
-    borderColor: "#ef6b6b",
-  },
-};
-
-function getCategoryStyle(category, fallbackIndex) {
-  if (category && CATEGORY_STYLES[category]) {
-    return CATEGORY_STYLES[category];
-  }
-
-  return CATEGORY_STYLES[CATEGORY_ORDER[fallbackIndex % CATEGORY_ORDER.length]];
-}
+import { blogCategoryOrder, getBlogCategoryStyle } from "../content/presentation";
+import SectionShell from "./SectionShell";
 
 function formatDate(input) {
   return new Date(input).toLocaleDateString("zh-CN", {
@@ -77,7 +39,7 @@ function splitRows(posts = []) {
   }, {});
   const rows = [[], [], []];
 
-  CATEGORY_ORDER.forEach((category, categoryIndex) => {
+  blogCategoryOrder.forEach((category, categoryIndex) => {
     const categoryPosts = grouped[category] || [];
 
     categoryPosts.forEach((post, postIndex) => {
@@ -85,7 +47,7 @@ function splitRows(posts = []) {
     });
   });
 
-  const leftovers = posts.filter((post) => !CATEGORY_ORDER.includes(post.category));
+  const leftovers = posts.filter((post) => !blogCategoryOrder.includes(post.category));
 
   leftovers.forEach((post, index) => {
     rows[index % rows.length].push(post);
@@ -135,7 +97,7 @@ function MarqueeRow({ rowPosts, direction, rowIndex, phaseClass }) {
     <div className="scroller scroller-soft-mask relative z-20 overflow-hidden" aria-label="博客滚动列表">
       <ul className={`scroller-track flex min-w-full shrink-0 gap-4 py-2 w-max flex-nowrap ${directionClass} ${phaseClass}`}>
         {duplicated.map((post, index) => {
-          const palette = getCategoryStyle(post.category, index + rowIndex);
+          const palette = getBlogCategoryStyle(post.category, index + rowIndex);
 
           return (
             <li key={`${post.title}-${rowIndex}-${index}`} className="shrink-0">
@@ -152,21 +114,20 @@ export default function BlogSection({ posts }) {
   const { rowOne, rowTwo, rowThree } = splitRows(posts);
 
   return (
-    <RevealSection id="blog" className="w-full px-4 lg:px-16 xl:px-32 2xl:px-44 relative z-10 my-24 lg:my-32">
-      <div className="w-full">
-        <div className="mb-8 lg:mb-10 flex flex-col gap-4">
-          <h2 className="text-orange-400 text-5xl xl:text-6xl font-semibold">博客</h2>
-          <p className="text-xl text-slate-600 max-w-4xl mt-2">
-            记录我的思考、学习和创作过程，包含AI、Web3、网络基础、电脑装机、运动健身、营养补剂等等。
-          </p>
-        </div>
-
-        <div className="grid mt-2" style={{ gap: "0.75rem" }}>
-          <MarqueeRow rowPosts={rowOne} direction="right" rowIndex={0} phaseClass="scroller-phase-a" />
-          <MarqueeRow rowPosts={rowTwo} direction="left" rowIndex={1} phaseClass="scroller-phase-a" />
-          <MarqueeRow rowPosts={rowThree} direction="right" rowIndex={2} phaseClass="scroller-phase-b" />
-        </div>
+    <SectionShell
+      id="blog"
+      title="博客"
+      intro={
+        <p className="mt-2 max-w-4xl text-xl text-slate-600">
+          记录我的思考、学习和创作过程，包含AI、Web3、网络基础、电脑装机、运动健身、营养补剂等等。
+        </p>
+      }
+    >
+      <div className="mt-2 grid" style={{ gap: "0.75rem" }}>
+        <MarqueeRow rowPosts={rowOne} direction="right" rowIndex={0} phaseClass="scroller-phase-a" />
+        <MarqueeRow rowPosts={rowTwo} direction="left" rowIndex={1} phaseClass="scroller-phase-a" />
+        <MarqueeRow rowPosts={rowThree} direction="right" rowIndex={2} phaseClass="scroller-phase-b" />
       </div>
-    </RevealSection>
+    </SectionShell>
   );
 }
