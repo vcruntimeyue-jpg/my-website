@@ -2,7 +2,7 @@ import SocialLinks from "./SocialLinks";
 
 export default function SiteFooter({ siteName, socialLinks }) {
   return (
-    <footer className="mb-12 mt-0 pt-4 text-center font-fantasy text-2xl text-gray-400">
+    <footer className="mt-0 pt-4 text-center font-fantasy text-2xl text-gray-400" style={{ paddingBottom: "100px" }}>
       {siteName}
       <div className="mt-4 flex items-center justify-center gap-x-6 text-2xl">
         <SocialLinks
