@@ -158,61 +158,6 @@ a:focus-visible {
   animation-play-state: paused !important;
 }
 
-@keyframes image-marquee-forward {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-50% - 0.875rem)); }
-}
-
-@keyframes image-marquee-reverse {
-  0% { transform: translateX(calc(-50% - 0.875rem)); }
-  100% { transform: translateX(0); }
-}
-
-.image-marquee-shell {
-  position: relative;
-  overflow: hidden;
-  padding: 0.25rem 0;
-  mask-image: linear-gradient(to right, transparent, white 8%, white 92%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, white 8%, white 92%, transparent);
-}
-
-.image-marquee-track {
-  display: flex;
-  width: max-content;
-  min-width: 100%;
-  flex-wrap: nowrap;
-  gap: 1.75rem;
-  padding: 0 0.5rem;
-  will-change: transform;
-}
-
-.image-marquee-track-forward {
-  animation: image-marquee-forward 42s linear infinite !important;
-}
-
-.image-marquee-track-reverse {
-  animation: image-marquee-reverse 46s linear infinite !important;
-}
-
-.image-marquee-track:hover {
-  animation-play-state: paused !important;
-}
-
-.image-marquee-track:focus-within {
-  animation-play-state: paused !important;
-}
-
-.image-marquee-card::after {
-  content: "";
-  position: absolute;
-  inset: auto 18px 18px auto;
-  width: 88px;
-  height: 88px;
-  border-radius: 9999px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0) 72%);
-  pointer-events: none;
-}
-
 /* 修正 SVG 显示 (防止原站样式将其隐藏或变形) */
 svg {
   display: unset !important;
@@ -303,16 +248,6 @@ svg {
 
   .blog-scroller-track-row-2 {
     animation-duration: 64s !important;
-    animation-iteration-count: infinite !important;
-  }
-
-  .image-marquee-track-forward {
-    animation-duration: 42s !important;
-    animation-iteration-count: infinite !important;
-  }
-
-  .image-marquee-track-reverse {
-    animation-duration: 46s !important;
     animation-iteration-count: infinite !important;
   }
 }
