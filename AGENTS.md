@@ -36,3 +36,4 @@ For routine content edits, `npm run verify` is the default pre-push gate.
 - Blog dates must stay in `YYYY-MM-DD`.
 - `featuredOnHome` game entries must have unique contiguous `featuredOrder` values starting at `1`.
 - If you add a new section-level rule, put the rule in validation scripts and, when relevant, in `app/content/presentation.js`.
+- Lightweight placeholder sections use `SectionShell` directly in `page.js` — no separate component file.
