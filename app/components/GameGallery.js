@@ -1,14 +1,16 @@
+import Image from "next/image";
 import { getGameDisplayItems } from "../content/presentation";
 
 function GamePoster({ item }) {
   if (item.cover) {
     return (
-      <div className="mx-auto w-[96%] overflow-hidden bg-slate-100 md:w-[95%]" style={{ aspectRatio: "16 / 9" }}>
-        <img
+      <div className="relative mx-auto aspect-video w-[96%] overflow-hidden bg-slate-100 md:w-[95%]">
+        <Image
           src={item.cover}
           alt={`${item.title} poster`}
-          className="block h-full w-full object-cover"
-          loading="lazy"
+          fill
+          sizes="(max-width: 768px) 96vw, 95vw"
+          className="object-cover"
         />
       </div>
     );
@@ -17,8 +19,8 @@ function GamePoster({ item }) {
   return (
     <div
       aria-hidden="true"
-      className="mx-auto w-[96%] md:w-[95%]"
-      style={{ aspectRatio: "16 / 9", background: item.posterColor }}
+      className="mx-auto aspect-video w-[96%] md:w-[95%]"
+      style={{ background: item.posterColor }}
     />
   );
 }

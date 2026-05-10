@@ -9,55 +9,45 @@ function formatDate(input) {
   });
 }
 
-function ensureMinItems(row, fallback, minCount = 4) {
-  if (!fallback.length) {
-    return [];
-  }
-
-  const source = row.length > 0 ? row : fallback;
-  const result = [...row];
-  let pointer = 0;
-
-  while (result.length < minCount) {
-    result.push(source[pointer % source.length]);
-    pointer += 1;
-  }
-
-  return result;
-}
+const ROW_COUNT = 3;
+const MIN_ITEMS_PER_ROW = 4;
 
 function splitRows(posts = []) {
-  const grouped = posts.reduce((result, post) => {
-    const key = post.category;
+  // Group posts by category
+  const byCategory = new Map();
+  for (const post of posts) {
+    const list = byCategory.get(post.category) || [];
+    list.push(post);
+    byCategory.set(post.category, list);
+  }
 
-    if (!result[key]) {
-      result[key] = [];
-    }
-
-    result[key].push(post);
-    return result;
-  }, {});
-  const rows = [[], [], []];
-
+  // Distribute across rows: each category's posts start in a different row
+  const rows = Array.from({ length: ROW_COUNT }, () => []);
   blogCategoryOrder.forEach((category, categoryIndex) => {
-    const categoryPosts = grouped[category] || [];
-
+    const categoryPosts = byCategory.get(category) || [];
     categoryPosts.forEach((post, postIndex) => {
-      rows[(categoryIndex + postIndex) % rows.length].push(post);
+      rows[(categoryIndex + postIndex) % ROW_COUNT].push(post);
     });
   });
 
-  const leftovers = posts.filter((post) => !blogCategoryOrder.includes(post.category));
+  // Any uncategorized posts go to rows round-robin
+  let leftoverIndex = 0;
+  for (const post of posts) {
+    if (!blogCategoryOrder.includes(post.category)) {
+      rows[leftoverIndex % ROW_COUNT].push(post);
+      leftoverIndex += 1;
+    }
+  }
 
-  leftovers.forEach((post, index) => {
-    rows[index % rows.length].push(post);
-  });
+  // Fill short rows by repeating from the first populated row's content
+  const fillSource = rows.find((r) => r.length > 0) || [];
+  for (let i = 0; i < ROW_COUNT; i++) {
+    while (rows[i].length < MIN_ITEMS_PER_ROW && fillSource.length > 0) {
+      rows[i].push(fillSource[rows[i].length % fillSource.length]);
+    }
+  }
 
-  return {
-    rowOne: ensureMinItems(rows[0], posts, 4),
-    rowTwo: ensureMinItems(rows[1], posts, 4),
-    rowThree: ensureMinItems(rows[2], posts, 4),
-  };
+  return { rowOne: rows[0], rowTwo: rows[1], rowThree: rows[2] };
 }
 
 function MarqueeBlogCard({ post, palette }) {
@@ -123,7 +113,7 @@ export default function BlogSection({ posts }) {
         </p>
       }
     >
-      <div className="mt-2 grid" style={{ gap: "0.75rem" }}>
+      <div className="mt-2 grid gap-3">
         <MarqueeRow rowPosts={rowOne} direction="right" rowIndex={0} phaseClass="scroller-phase-a" />
         <MarqueeRow rowPosts={rowTwo} direction="left" rowIndex={1} phaseClass="scroller-phase-a" />
         <MarqueeRow rowPosts={rowThree} direction="right" rowIndex={2} phaseClass="scroller-phase-b" />

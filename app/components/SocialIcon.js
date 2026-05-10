@@ -17,12 +17,14 @@ const GmailIcon = () => (
   </svg>
 );
 
-const iconMap = {
-  github: <GithubIcon />,
-  twitter: <TwitterIcon />,
-  gmail: <GmailIcon />,
+// Each icon self-normalizes its optical alignment so callers never need per-icon tweaks.
+const iconRegistry = {
+  github: { element: <GithubIcon />, adjust: "relative top-[-1px]" },
+  twitter: { element: <TwitterIcon />, adjust: "inline-flex scale-[0.97] relative top-[-2px]" },
+  gmail: { element: <GmailIcon />, adjust: "relative top-[2px]" },
 };
 
 export default function SocialIcon({ iconKey, fallbackIconKey = "github" }) {
-  return iconMap[iconKey] || iconMap[fallbackIconKey];
+  const entry = iconRegistry[iconKey] || iconRegistry[fallbackIconKey];
+  return <span className={entry.adjust}>{entry.element}</span>;
 }

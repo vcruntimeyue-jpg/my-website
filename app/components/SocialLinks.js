@@ -1,6 +1,11 @@
 import SocialIcon from "./SocialIcon";
 
-export default function SocialLinks({ links, trackPrefix, linkClassName = "", linkStyle, getLinkStyle }) {
+const variantStyles = {
+  navbar: "text-2xl text-slate-600 transition-colors hover:text-orange-500",
+  footer: "text-2xl text-gray-400 transition-colors hover:text-orange-500",
+};
+
+export default function SocialLinks({ links, trackPrefix, variant = "navbar" }) {
   return (
     <>
       {links.map((social) => (
@@ -11,8 +16,7 @@ export default function SocialLinks({ links, trackPrefix, linkClassName = "", li
           href={social.url}
           data-track={trackPrefix ? `${trackPrefix}:${social.label}` : undefined}
           aria-label={social.label}
-          style={{ ...linkStyle, ...(getLinkStyle ? getLinkStyle(social) : null) }}
-          className={linkClassName}
+          className={variantStyles[variant] || variantStyles.navbar}
         >
           <SocialIcon iconKey={social.iconKey} />
         </a>

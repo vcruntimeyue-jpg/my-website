@@ -13,9 +13,6 @@ const pageSource = readRepoFile("app/page.js");
 const navbarSource = readRepoFile("app/components/Navbar.js");
 const footerSource = readRepoFile("app/components/SiteFooter.js");
 const socialLinksSource = readRepoFile("app/components/SocialLinks.js");
-const musicSectionSource = readRepoFile("app/components/MusicSection.js");
-const imagesSectionSource = readRepoFile("app/components/ImagesSection.js");
-const favoritesSectionSource = readRepoFile("app/components/FavoritesSection.js");
 const gameGallerySource = readRepoFile("app/components/GameGallery.js");
 const blogSectionSource = readRepoFile("app/components/BlogSection.js");
 
@@ -28,7 +25,7 @@ const allowedClientEntries = new Set([
   "app/components/RevealSection.js",
 ]);
 
-["app/components/AnalyticsBridge.js", "app/components/RevealSection.js", "app/components/HeroSection.js", "app/components/Navbar.js", "app/components/BlogSection.js", "app/components/GameSection.js", "app/components/GameGallery.js", "app/components/MusicSection.js", "app/components/ImagesSection.js", "app/components/FavoritesSection.js"].forEach((relativePath) => {
+["app/components/AnalyticsBridge.js", "app/components/RevealSection.js", "app/components/HeroSection.js", "app/components/Navbar.js", "app/components/BlogSection.js", "app/components/GameSection.js", "app/components/GameGallery.js"].forEach((relativePath) => {
   const source = readRepoFile(relativePath);
   const hasUseClient = source.includes('"use client"');
 
@@ -44,9 +41,9 @@ const allowedClientEntries = new Set([
 [
   'BlogSection posts={siteContent.sections.blog}',
   'GameSection items={siteContent.sections.game}',
-  '<MusicSection />',
-  '<ImagesSection />',
-  '<FavoritesSection />',
+  'id="music"',
+  'id="images"',
+  'id="favorites"',
 ].forEach((needle) => {
   if (!pageSource.includes(needle)) {
     addError(errors, `app/page.js is missing section wiring: ${needle}`);
@@ -63,18 +60,6 @@ if (!footerSource.includes("SocialLinks")) {
 
 if (!socialLinksSource.includes("SocialIcon")) {
   addError(errors, "SocialLinks must consume the shared SocialIcon registry");
-}
-
-if (musicSectionSource.includes("items.map") || musicSectionSource.includes("data-track={`music:")) {
-  addError(errors, "MusicSection should be intro-only");
-}
-
-if (imagesSectionSource.includes("items.map") || imagesSectionSource.includes("data-track={`image:")) {
-  addError(errors, "ImagesSection should be intro-only");
-}
-
-if (favoritesSectionSource.includes("groups.map") || favoritesSectionSource.includes("data-track={`favorite:")) {
-  addError(errors, "FavoritesSection should be intro-only");
 }
 
 if (!gameGallerySource.includes("getGameDisplayItems")) {

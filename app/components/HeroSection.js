@@ -20,33 +20,16 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      style={{
-        position: "relative",
-        width: "100%",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingTop: "60px",
-      }}
+      className="relative flex w-full min-h-screen flex-col items-center justify-center pt-[60px]"
     >
       {/* 轨道系统容器 */}
       <div
-        style={{
-          position: "relative",
-          width: CONTAINER,
-          height: CONTAINER,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexShrink: 0,
-          transform: "translateY(-24px)",
-        }}
+        className="relative flex shrink-0 items-center justify-center"
+        style={{ width: CONTAINER, height: CONTAINER, transform: "translateY(-24px)" }}
       >
         {/* SVG 虚线轨道 */}
         <svg
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+          className="pointer-events-none absolute inset-0 h-full w-full"
           xmlns="http://www.w3.org/2000/svg"
         >
           {RINGS.map((ring, i) => (
@@ -83,15 +66,11 @@ export default function HeroSection() {
                 <div style={{ position: "absolute", top: -half, left: -half, animation: `orbitCounterSpin ${anim}` }}>
                   <div
                     title={item.label}
+                    className="flex items-center justify-center rounded-full border-2 border-white/15"
                     style={{
                       width: sz, height: sz,
                       fontSize: sz * 0.44,
                       background: item.bg,
-                      border: "2px solid rgba(255,255,255,0.15)",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
                       boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
                     }}
                   >
@@ -103,28 +82,21 @@ export default function HeroSection() {
           );
         })}
 
-        {/* 中心圆 — 外层旋转描边，内层静止无文字 */}
+        {/* 中心圆 — 外层旋转描边 */}
         <div
+          className="absolute z-10 flex items-center justify-center rounded-full"
           style={{
-            position: "absolute",
-            zIndex: 10,
             width: CENTER_SIZE + 12,
             height: CENTER_SIZE + 12,
-            borderRadius: "50%",
             background: "conic-gradient(from 0deg, #fb923c 0%, #fde68a 20%, #f97316 50%, #fbbf24 80%, #fb923c 100%)",
             padding: "8px 2px 5px 3px",
             animation: "borderSpin 10s linear infinite",
             boxShadow: "0 0 50px rgba(251,146,60,0.4), 0 0 100px rgba(251,146,60,0.15)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
           }}
         >
           <div
+            className="h-full w-full rounded-full"
             style={{
-              width: "100%",
-              height: "100%",
-              borderRadius: "50%",
               background: "linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(241,245,249,0.98) 100%)",
               backdropFilter: "blur(10px)",
             }}
@@ -132,26 +104,16 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll 指示器 — 绝对定位在屏幕底部，保证立刻可见 */}
+      {/* Scroll 指示器 */}
       <div
-        className="animate-bounce"
-        style={{
-          position: "absolute",
-          bottom: "4px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "4px",
-          marginTop: "16px",
-          cursor: "default",
-          userSelect: "none",
-        }}
+        className="animate-bounce absolute bottom-1 flex cursor-default select-none flex-col items-center gap-1"
+        style={{ marginTop: "16px" }}
       >
-        <span style={{ color: "#94a3b8", fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase" }}>
+        <span className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
           Scroll
         </span>
         <svg
-          style={{ width: 16, height: 16, color: "#fb923c" }}
+          className="h-4 w-4 text-orange-400"
           fill="none"
           stroke="#fb923c"
           viewBox="0 0 24 24"
