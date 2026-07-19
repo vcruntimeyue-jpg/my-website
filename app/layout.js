@@ -1,24 +1,8 @@
-import { Inter, Noto_Sans_SC, Outfit } from "next/font/google";
+import "@fontsource-variable/inter";
+import "@fontsource-variable/outfit";
 import "./globals.css";
 import AnalyticsBridge from "./components/AnalyticsBridge";
 import { siteContent } from "./content/siteContent";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
-
-const notoSansSC = Noto_Sans_SC({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "900"],
-  variable: "--font-noto-sans-sc",
-});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: "900",
-  variable: "--font-outfit",
-});
 
 const baseUrl = new URL(siteContent.site.domain);
 
@@ -62,10 +46,14 @@ export const viewport = {
   initialScale: 1,
 };
 
+/** @param {{children: import("react").ReactNode}} props */
 export default function RootLayout({ children }) {
   return (
-    <html lang="zh-CN" className={`${inter.variable} ${notoSansSC.variable} ${outfit.variable}`}>
+    <html lang="zh-CN">
       <body className="antialiased">
+        <a className="skip-link" href="#main-content">
+          跳到主要内容
+        </a>
         <AnalyticsBridge />
         {children}
       </body>

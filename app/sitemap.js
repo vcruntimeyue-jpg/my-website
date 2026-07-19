@@ -1,4 +1,4 @@
-import { siteContent } from "./content/siteContent";
+import { siteContent } from "./content/siteContent.js";
 
 export default function sitemap() {
   return [
@@ -7,6 +7,12 @@ export default function sitemap() {
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      url: `${siteContent.site.domain}/game`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
   ];
 }

@@ -5,6 +5,16 @@ import { siteContent } from "../content/siteContent";
 export const metadata = {
   title: "Vcrunyue Game",
   description: "完整收录 VCRUNYUE 达成全成就的游戏清单。",
+  alternates: {
+    canonical: "/game",
+  },
+  openGraph: {
+    type: "website",
+    url: "/game",
+    title: "Vcrunyue Game",
+    description: "完整收录 VCRUNYUE 达成全成就的游戏清单。",
+    images: ["/assets/seo/og-image.png"],
+  },
 };
 
 export default function GameArchivePage() {

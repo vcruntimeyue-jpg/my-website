@@ -1,57 +1,68 @@
-# 维护手册（小白版）
+# 维护手册
 
-## 1) 改一篇博客
+## 1）修改首屏定位与入口
+
+打开 `app/content/hero.js`：
+
+- `eyebrow`：首屏短标签
+- `title`：页面唯一主标题
+- `summary`：一句补充说明
+- `primaryAction`：博客锚点入口
+- `secondaryAction`：游戏归档入口
+
+入口地址必须保持为已存在的站内锚点或路由，修改后运行 `npm run verify`。
+
+## 2）更新音乐、图片、收藏的策展状态
+
+打开 `app/content/sections/upcoming.js`，每个板块包含：
+
+- `id`：固定使用 `music`、`images`、`favorites`
+- `title`：板块标题
+- `statusLabel`：当前状态
+- `intro`：真实进度说明
+- `topics`：计划整理的主题方向
+
+未准备好真实清单时，不要用示例条目冒充个人收藏。
+
+## 3）新增博客
 
 1. 打开 `app/content/sections/blog.js`
-2. 找到 `blogPosts`
-3. 按现有格式新增一条对象：
-   - `title`：标题
-   - `date`：日期（例如 `2026-04-04`）
-   - `summary`：简介
-   - `cover`：封面图路径（如 `/assets/blog/xxx.webp`）
-   - `url`：文章外链（必须 `https://`）
-   - `tags`：标签数组
-4. 运行 `npm run verify`
+2. 按现有对象新增 `title`、`date`、`summary`、`cover`、`url`、`category`、`tags`
+3. 日期使用 `YYYY-MM-DD`
+4. 外部链接使用 `https://`
+5. 图片放入 `public/assets/blog`
+6. 运行 `npm run verify`
 
-## 2) 换图片
+## 4）新增或调整游戏
 
-1. 把图片放进对应目录：
-   - 博客：`public/assets/blog`
-   - 游戏：`public/assets/games`
-2. 回到对应模块，把 `cover` 或 `image` 改成新路径：
-   - 博客：`app/content/sections/blog.js`
-   - 游戏：`app/content/sections/game.js`
-3. 运行 `npm run verify`
+1. 打开 `app/content/sections/game.js`
+2. 新增标题、简介、渐变色及可选封面
+3. 封面放入 `public/assets/games`
+4. 首页精选项设置 `featuredOnHome: true`
+5. 所有精选项的 `featuredOrder` 必须从 1 连续排列且不重复
+6. 运行 `npm run verify`
 
-## 3) 改社交链接
+## 5）修改社交链接与导航
 
-1. 打开 `app/content/navigation.js`
-2. 找到 `socialLinks`
-3. 改 `url`，必须是 `https://...`
-4. 运行 `npm run verify`
+- 社交链接：`app/content/navigation.js` 的 `socialLinks`
+- 导航：同文件的 `navLinks`
+- 外部链接必须是 `https://`；邮箱可使用 `mailto:`
+- 导航锚点只使用 `#home #blog #game #music #images #favorites #contact`
 
-## 4) 改导航栏文字顺序
+## 6）替换图片
 
-1. 打开 `app/content/navigation.js`
-2. 修改 `navLinks`
-3. 仅使用这些锚点：`#home #blog #game #music #images #favorites #contact`
-4. 运行 `npm run verify`
+- 博客：`public/assets/blog`
+- 游戏：`public/assets/games`
+- SEO：`public/assets/seo/og-image.png`
 
-## 5) 发布前检查
+优先使用 WebP/AVIF 或经过压缩的 JPEG/PNG。替换后运行 `npm run check:assets` 和 `npm run build`。
 
-按顺序执行：
+## 7）发布前检查
 
 ```bash
-npm run check:content
-npm run check:assets
-npm run check:structure
-npm run build
-```
-
-更省事的方式：
-
-```bash
+npm ci
 npm run verify
+npm audit --audit-level=high
 ```
 
-全部通过再上线。
+全部通过后再提交和推送。若 build 失败，先区分代码错误、进程权限或外部网络问题，再决定修复方式。

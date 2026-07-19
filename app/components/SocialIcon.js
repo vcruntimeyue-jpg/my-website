@@ -18,12 +18,19 @@ const GmailIcon = () => (
 );
 
 // Each icon self-normalizes its optical alignment so callers never need per-icon tweaks.
+/** @type {Record<"github"|"twitter"|"gmail", {element: import("react").ReactNode, adjust: string}>} */
 const iconRegistry = {
   github: { element: <GithubIcon />, adjust: "relative top-[-1px]" },
   twitter: { element: <TwitterIcon />, adjust: "inline-flex scale-[0.97] relative top-[-2px]" },
   gmail: { element: <GmailIcon />, adjust: "relative top-[2px]" },
 };
 
+/**
+ * @param {{
+ *   iconKey: "github"|"twitter"|"gmail",
+ *   fallbackIconKey?: "github"|"twitter"|"gmail"
+ * }} props
+ */
 export default function SocialIcon({ iconKey, fallbackIconKey = "github" }) {
   const entry = iconRegistry[iconKey] || iconRegistry[fallbackIconKey];
   return <span className={entry.adjust}>{entry.element}</span>;

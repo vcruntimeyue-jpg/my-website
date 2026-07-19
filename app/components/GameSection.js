@@ -2,6 +2,7 @@ import Link from "next/link";
 import GameGallery from "./GameGallery";
 import SectionShell from "./SectionShell";
 
+/** @param {{items: import("../content/schema").GameEntry[]}} props */
 export default function GameSection({ items }) {
   return (
     <SectionShell

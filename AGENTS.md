@@ -22,12 +22,15 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Done definition
 
+- `npm run lint`
+- `npm run typecheck`
+- `npm run test`
 - `npm run check:content`
 - `npm run check:assets`
 - `npm run check:structure`
 - `npm run build`
 
-For routine content edits, `npm run verify` is the default pre-push gate.
+`npm run verify` is the default pre-push gate for code and content changes.
 
 ## Content rules
 

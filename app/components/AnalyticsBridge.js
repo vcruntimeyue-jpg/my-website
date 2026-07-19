@@ -1,17 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { trackEvent } from "../lib/analytics";
 
 export default function AnalyticsBridge() {
+  const pathname = usePathname();
+
   useEffect(() => {
     trackEvent("page_view", {
-      path: window.location.pathname,
+      path: pathname,
       title: document.title,
     });
+  }, [pathname]);
 
+  useEffect(() => {
+    /** @param {MouseEvent} event */
     const onClick = (event) => {
-      const target = event.target.closest("a[data-track]");
+      const target = event.target instanceof Element
+        ? event.target.closest("a[data-track]")
+        : null;
       if (!target) {
         return;
       }

@@ -4,12 +4,39 @@ export const BLOG_CATEGORIES = ["AI", "Web3", "网络基础", "电脑装机", "�
 
 export const PROGRESS_STATUSES = ["done", "partial", "todo"];
 
+export const UPCOMING_SECTION_IDS = ["music", "images", "favorites"];
+
 /**
  * @typedef {"AI"|"Web3"|"网络基础"|"电脑装机"|"运动健身"|"营养补剂"} BlogCategory
  */
 
 /**
  * @typedef {"done"|"partial"|"todo"} ProgressStatus
+ */
+
+/**
+ * @typedef {Object} HeroAction
+ * @property {string} label
+ * @property {string} href
+ * @property {string} track
+ */
+
+/**
+ * @typedef {Object} HeroContent
+ * @property {string} eyebrow
+ * @property {string} title
+ * @property {string} summary
+ * @property {HeroAction} primaryAction
+ * @property {HeroAction} secondaryAction
+ */
+
+/**
+ * @typedef {Object} UpcomingSection
+ * @property {"music"|"images"|"favorites"} id
+ * @property {string} title
+ * @property {string} statusLabel
+ * @property {string} intro
+ * @property {string[]} topics
  */
 
 /**
@@ -27,7 +54,7 @@ export const PROGRESS_STATUSES = ["done", "partial", "todo"];
  * @typedef {Object} SocialLink
  * @property {string} platform
  * @property {string} label
- * @property {string} iconKey
+ * @property {"github"|"twitter"|"gmail"} iconKey
  * @property {string} url
  */
 

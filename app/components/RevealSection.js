@@ -1,6 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
 
+/**
+ * @param {{
+ *   children: import("react").ReactNode,
+ *   id: string,
+ *   className?: string,
+ *   style?: import("react").CSSProperties
+ * }} props
+ */
 export default function RevealSection({ children, id, className, style }) {
   return (
     <motion.section

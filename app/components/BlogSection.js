@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { blogCategoryOrder, getBlogCategoryStyle } from "../content/presentation";
 import SectionShell from "./SectionShell";
 
+/** @param {string} input */
 function formatDate(input) {
   return new Date(input).toLocaleDateString("zh-CN", {
     year: "numeric",
@@ -12,8 +14,10 @@ function formatDate(input) {
 const ROW_COUNT = 3;
 const MIN_ITEMS_PER_ROW = 4;
 
+/** @param {import("../content/schema").BlogPost[]} [posts] */
 function splitRows(posts = []) {
   // Group posts by category
+  /** @type {Map<import("../content/schema").BlogCategory, import("../content/schema").BlogPost[]>} */
   const byCategory = new Map();
   for (const post of posts) {
     const list = byCategory.get(post.category) || [];
@@ -22,6 +26,7 @@ function splitRows(posts = []) {
   }
 
   // Distribute across rows: each category's posts start in a different row
+  /** @type {import("../content/schema").BlogPost[][]} */
   const rows = Array.from({ length: ROW_COUNT }, () => []);
   blogCategoryOrder.forEach((category, categoryIndex) => {
     const categoryPosts = byCategory.get(category) || [];
@@ -50,48 +55,90 @@ function splitRows(posts = []) {
   return { rowOne: rows[0], rowTwo: rows[1], rowThree: rows[2] };
 }
 
-function MarqueeBlogCard({ post, palette }) {
+/**
+ * @param {{
+ *   post: import("../content/schema").BlogPost,
+ *   palette: {backgroundColor: string, borderColor: string},
+ *   isClone?: boolean
+ * }} props
+ */
+function MarqueeBlogCard({ post, palette, isClone = false }) {
+  const content = (
+    <>
+      <div className="flex items-center justify-between gap-2 text-white">
+        <p className="truncate pr-3 text-lg font-bold">{post.category}</p>
+        <time className="text-sm text-gray-200">{formatDate(post.date)}</time>
+      </div>
+      <h3 className="mt-3 line-clamp-2 text-2xl font-semibold leading-tight text-white">{post.title}</h3>
+      <p className="mt-2 line-clamp-3 text-sm leading-6 text-gray-200">{post.summary}</p>
+    </>
+  );
+
   return (
     <article
       className="h-full w-[350px] max-w-full relative rounded-2xl border border-b-0 px-8 py-6 md:w-[450px] overflow-hidden flex flex-col gap-3"
       style={{ backgroundColor: palette.backgroundColor, borderColor: palette.borderColor }}
     >
+      <div aria-hidden="true" className="absolute inset-0">
+        <Image
+          src={post.cover}
+          alt=""
+          fill
+          sizes="(max-width: 767px) 350px, 450px"
+          className="object-cover opacity-35"
+        />
+        <div className="absolute inset-0 opacity-80" style={{ backgroundColor: palette.backgroundColor }} />
+      </div>
       <div
         aria-hidden="true"
         className="absolute inset-0 w-full h-full scale-[1.2] transform opacity-10 [mask-image:radial-gradient(#fff,transparent,75%)]"
         style={{ backgroundImage: "url(/assets/ui/noise.webp)", backgroundSize: "30%" }}
       />
-      <a
-        href={post.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-track={`blog:${post.title}`}
-        className="relative block h-full"
-      >
-        <div className="flex text-white gap-2 items-center justify-between">
-          <p className="text-lg font-bold truncate pr-3">{post.category}</p>
-          <time className="text-sm text-gray-200">{formatDate(post.date)}</time>
-        </div>
-        <h3 className="text-2xl font-semibold text-white leading-tight line-clamp-2 mt-3">{post.title}</h3>
-        <p className="text-sm text-gray-200 leading-6 line-clamp-3 mt-2">{post.summary}</p>
-      </a>
+      {isClone ? (
+        <div className="relative block h-full">{content}</div>
+      ) : (
+        <a
+          href={post.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-track={`blog:${post.title}`}
+          className="relative block h-full"
+        >
+          {content}
+        </a>
+      )}
     </article>
   );
 }
 
+/**
+ * @param {{
+ *   rowPosts: import("../content/schema").BlogPost[],
+ *   direction: "left"|"right",
+ *   rowIndex: number,
+ *   phaseClass: string
+ * }} props
+ */
 function MarqueeRow({ rowPosts, direction, rowIndex, phaseClass }) {
-  const duplicated = [...rowPosts, ...rowPosts];
+  const displayItems = [
+    ...rowPosts.map((post) => ({ post, isClone: false })),
+    ...rowPosts.map((post) => ({ post, isClone: true })),
+  ];
   const directionClass = direction === "right" ? "scroller-track-right" : "scroller-track-left";
 
   return (
     <div className="scroller scroller-soft-mask relative z-20 overflow-hidden" aria-label="博客滚动列表">
       <ul className={`scroller-track flex min-w-full shrink-0 gap-4 py-2 w-max flex-nowrap ${directionClass} ${phaseClass}`}>
-        {duplicated.map((post, index) => {
+        {displayItems.map(({ post, isClone }, index) => {
           const palette = getBlogCategoryStyle(post.category, index + rowIndex);
 
           return (
-            <li key={`${post.title}-${rowIndex}-${index}`} className="shrink-0">
-              <MarqueeBlogCard post={post} palette={palette} />
+            <li
+              key={`${post.title}-${rowIndex}-${index}`}
+              className={isClone ? "scroller-clone shrink-0" : "shrink-0"}
+              aria-hidden={isClone || undefined}
+            >
+              <MarqueeBlogCard post={post} palette={palette} isClone={isClone} />
             </li>
           );
         })}
@@ -100,6 +147,7 @@ function MarqueeRow({ rowPosts, direction, rowIndex, phaseClass }) {
   );
 }
 
+/** @param {{posts: import("../content/schema").BlogPost[]}} props */
 export default function BlogSection({ posts }) {
   const { rowOne, rowTwo, rowThree } = splitRows(posts);
 

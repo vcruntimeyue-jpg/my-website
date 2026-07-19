@@ -1,5 +1,8 @@
 import SocialLinks from "./SocialLinks";
 
+/**
+ * @param {{siteName: string, socialLinks: import("../content/schema").SocialLink[]}} props
+ */
 export default function SiteFooter({ siteName, socialLinks }) {
   return (
     <footer className="mt-0 pt-4 pb-[50px] text-center font-fantasy text-2xl text-gray-400">

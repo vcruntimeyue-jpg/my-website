@@ -1,21 +1,36 @@
+/**
+ * @typedef {Window & {
+ *   va?: {track?: (name: string, payload: Record<string, unknown>) => void},
+ *   gtag?: (command: string, name: string, payload: Record<string, unknown>) => void,
+ *   umami?: {track?: (name: string, payload: Record<string, unknown>) => void},
+ *   plausible?: (name: string, options: {props: Record<string, unknown>}) => void
+ * }} AnalyticsWindow
+ */
+
+/**
+ * @param {string} name
+ * @param {Record<string, unknown>} [payload]
+ */
 export function trackEvent(name, payload = {}) {
   if (typeof window === "undefined") {
     return;
   }
 
-  if (window.va && typeof window.va.track === "function") {
-    window.va.track(name, payload);
+  const analyticsWindow = /** @type {AnalyticsWindow} */ (window);
+
+  if (analyticsWindow.va && typeof analyticsWindow.va.track === "function") {
+    analyticsWindow.va.track(name, payload);
   }
 
-  if (typeof window.gtag === "function") {
-    window.gtag("event", name, payload);
+  if (typeof analyticsWindow.gtag === "function") {
+    analyticsWindow.gtag("event", name, payload);
   }
 
-  if (window.umami && typeof window.umami.track === "function") {
-    window.umami.track(name, payload);
+  if (analyticsWindow.umami && typeof analyticsWindow.umami.track === "function") {
+    analyticsWindow.umami.track(name, payload);
   }
 
-  if (typeof window.plausible === "function") {
-    window.plausible(name, { props: payload });
+  if (typeof analyticsWindow.plausible === "function") {
+    analyticsWindow.plausible(name, { props: payload });
   }
 }

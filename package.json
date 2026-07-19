@@ -2,23 +2,35 @@
   "name": "my-website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --project jsconfig.json --noEmit",
+    "test": "node --test --test-isolation=none tests/site-behavior.test.mjs",
     "check:content": "node --no-warnings scripts/check-content.mjs",
     "check:assets": "node --no-warnings scripts/check-assets.mjs",
     "check:structure": "node --no-warnings scripts/check-structure.mjs",
-    "verify": "npm run check:content && npm run check:assets && npm run check:structure && npm run build"
+    "verify": "npm run lint && npm run typecheck && npm run test && npm run check:content && npm run check:assets && npm run check:structure && npm run build"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/outfit": "^5.2.8",
     "framer-motion": "^12.38.0",
-    "next": "16.2.2",
+    "next": "^16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "@types/node": "^26.1.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.10",
+    "tailwindcss": "^4",
+    "typescript": "^5.9.3"
   }
 }

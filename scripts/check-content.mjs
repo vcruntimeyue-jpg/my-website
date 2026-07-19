@@ -1,9 +1,16 @@
 import { navLinks, socialLinks } from "../app/content/navigation.js";
+import { hero } from "../app/content/hero.js";
 import { getFeaturedGames } from "../app/content/presentation.js";
 import { progress } from "../app/content/progress.js";
-import { BLOG_CATEGORIES, NAV_ANCHORS, PROGRESS_STATUSES } from "../app/content/schema.js";
+import {
+  BLOG_CATEGORIES,
+  NAV_ANCHORS,
+  PROGRESS_STATUSES,
+  UPCOMING_SECTION_IDS,
+} from "../app/content/schema.js";
 import { gameEntries } from "../app/content/sections/game.js";
 import { blogPosts } from "../app/content/sections/blog.js";
+import { upcomingSections } from "../app/content/sections/upcoming.js";
 import { site } from "../app/content/site.js";
 import {
   addError,
@@ -20,10 +27,12 @@ function checkPlaceholders() {
   walkValues(
     {
       site,
+      hero,
       socialLinks,
       navLinks,
       blogPosts,
       gameEntries,
+      upcomingSections,
       progress,
     },
     (value, fieldPath) => {
@@ -90,6 +99,43 @@ function checkNavigation() {
     if (!NAV_ANCHORS.includes(item.href)) {
       addError(errors, `navLinks[${index}].href: invalid anchor "${item.href}"`);
     }
+  });
+}
+
+function checkHero() {
+  ["eyebrow", "title", "summary"].forEach((key) => {
+    assertRequiredText(errors, hero[key], `hero.${key}`);
+  });
+
+  [hero.primaryAction, hero.secondaryAction].forEach((action, index) => {
+    const fieldPath = index === 0 ? "hero.primaryAction" : "hero.secondaryAction";
+    assertRequiredText(errors, action.label, `${fieldPath}.label`);
+    assertRequiredText(errors, action.track, `${fieldPath}.track`);
+    if (!["#blog", "/game"].includes(action.href)) {
+      addError(errors, `${fieldPath}.href: unsupported destination "${action.href}"`);
+    }
+  });
+}
+
+function checkUpcomingSections() {
+  assertArray(errors, upcomingSections, "sections.upcoming");
+  assertUnique(errors, upcomingSections.map((item) => item.id), "sections.upcoming.id");
+
+  const actualIds = upcomingSections.map((item) => item.id);
+  if (actualIds.join(",") !== UPCOMING_SECTION_IDS.join(",")) {
+    addError(errors, `sections.upcoming must use ids in order: ${UPCOMING_SECTION_IDS.join(", ")}`);
+  }
+
+  upcomingSections.forEach((item, index) => {
+    assertRequiredText(errors, item.title, `sections.upcoming[${index}].title`);
+    assertRequiredText(errors, item.statusLabel, `sections.upcoming[${index}].statusLabel`);
+    assertRequiredText(errors, item.intro, `sections.upcoming[${index}].intro`);
+    if (assertArray(errors, item.topics, `sections.upcoming[${index}].topics`) && item.topics.length === 0) {
+      addError(errors, `sections.upcoming[${index}].topics: must contain at least one topic`);
+    }
+    item.topics.forEach((topic, topicIndex) => {
+      assertRequiredText(errors, topic, `sections.upcoming[${index}].topics[${topicIndex}]`);
+    });
   });
 }
 
@@ -172,8 +218,10 @@ function checkProgress() {
 checkPlaceholders();
 checkSite();
 checkNavigation();
+checkHero();
 checkBlog();
 checkGames();
+checkUpcomingSections();
 checkProgress();
 
 if (errors.length > 0) {

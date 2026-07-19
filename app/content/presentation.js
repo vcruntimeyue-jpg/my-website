@@ -1,6 +1,7 @@
 import { BLOG_CATEGORIES } from "./schema.js";
 
-export const blogCategoryOrder = BLOG_CATEGORIES;
+/** @type {import("./schema").BlogCategory[]} */
+export const blogCategoryOrder = /** @type {import("./schema").BlogCategory[]} */ (BLOG_CATEGORIES);
 
 /** @type {Record<import("./schema").BlogCategory, { backgroundColor: string, borderColor: string }>} */
 export const blogCategoryStyles = {
@@ -30,6 +31,10 @@ export const blogCategoryStyles = {
   },
 };
 
+/**
+ * @param {import("./schema").BlogCategory} category
+ * @param {number} fallbackIndex
+ */
 export function getBlogCategoryStyle(category, fallbackIndex) {
   if (category && blogCategoryStyles[category]) {
     return blogCategoryStyles[category];
@@ -38,12 +43,17 @@ export function getBlogCategoryStyle(category, fallbackIndex) {
   return blogCategoryStyles[blogCategoryOrder[fallbackIndex % blogCategoryOrder.length]];
 }
 
+/** @param {import("./schema").GameEntry[]} items */
 export function getFeaturedGames(items) {
   return items
     .filter((item) => item.featuredOnHome)
     .sort((a, b) => (a.featuredOrder ?? Number.MAX_SAFE_INTEGER) - (b.featuredOrder ?? Number.MAX_SAFE_INTEGER));
 }
 
+/**
+ * @param {import("./schema").GameEntry[]} items
+ * @param {"home"|"archive"} [variant]
+ */
 export function getGameDisplayItems(items, variant = "home") {
   return variant === "home" ? getFeaturedGames(items) : items;
 }

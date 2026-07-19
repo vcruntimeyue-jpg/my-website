@@ -1,126 +1,79 @@
-const RINGS = [
-  { radius: 221, opacity: 0.55, duration: 11, iconSize: 52 },
-  { radius: 291, opacity: 0.30, duration: 15, iconSize: 60 },
-  { radius: 365, opacity: 0.12, duration: 20, iconSize: 68 },
-];
+import Link from "next/link";
+
+const RINGS = ["hero-ring-one", "hero-ring-two", "hero-ring-three"];
 
 const ORBIT_ITEMS = [
-  { ring: 1, delay: 0,    emoji: "⚡", label: "代码",  bg: "#1e293b" },
-  { ring: 1, delay: -3.5, emoji: "🎮", label: "游戏",  bg: "#4c1d95" },
-  { ring: 2, delay: 0,    emoji: "🎵", label: "音乐",  bg: "#0f766e" },
-  { ring: 2, delay: -6.5, emoji: "📚", label: "书",    bg: "#92400e" },
-  { ring: 3, delay: 0,    emoji: "✈️", label: "旅行",  bg: "#0369a1" },
-  { ring: 3, delay: -10,  emoji: "🌐", label: "开源",  bg: "#166534" },
+  { className: "orbit-one-a", emoji: "⚡", label: "代码" },
+  { className: "orbit-one-b", emoji: "🎮", label: "游戏" },
+  { className: "orbit-two-a", emoji: "🎵", label: "音乐" },
+  { className: "orbit-two-b", emoji: "📚", label: "阅读" },
+  { className: "orbit-three-a", emoji: "✈️", label: "旅行" },
+  { className: "orbit-three-b", emoji: "🌐", label: "开源" },
 ];
 
-const CONTAINER = 800;
-const CENTER_SIZE = 340;
-
-export default function HeroSection() {
+/** @param {{hero: import("../content/schema").HeroContent}} props */
+export default function HeroSection({ hero }) {
   return (
-    <section
-      id="home"
-      className="relative flex w-full min-h-screen flex-col items-center justify-center pt-[60px]"
-    >
-      {/* 轨道系统容器 */}
-      <div
-        className="relative flex shrink-0 items-center justify-center"
-        style={{ width: CONTAINER, height: CONTAINER, transform: "translateY(-24px)" }}
-      >
-        {/* SVG 虚线轨道 */}
-        <svg
-          className="pointer-events-none absolute inset-0 h-full w-full"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {RINGS.map((ring, i) => (
-            <circle
-              key={i}
-              cx="50%" cy="50%"
-              r={ring.radius}
-              fill="none"
-              stroke="#334155"
-              strokeWidth="1"
-              strokeDasharray="5 5"
-              strokeOpacity={ring.opacity}
-            />
+    <section id="home" className="hero-section relative flex min-h-[100svh] w-full items-center justify-center px-4 pb-16 pt-32 lg:pt-20">
+      <div className="hero-stage relative flex shrink-0 items-center justify-center">
+        <div aria-hidden="true" className="absolute inset-0">
+          {RINGS.map((ringClass) => (
+            <div key={ringClass} className={`hero-ring ${ringClass}`} />
           ))}
-        </svg>
 
-        {/* 轨道图标 */}
-        {ORBIT_ITEMS.map((item, i) => {
-          const ring = RINGS[item.ring - 1];
-          const anim = `${ring.duration}s linear ${item.delay}s infinite`;
-          const sz = ring.iconSize;
-          const half = sz / 2;
-          return (
-            <div
-              key={i}
-              style={{
-                position: "absolute",
-                top: "50%", left: "50%",
-                width: 0, height: 0,
-                animation: `orbitSpin ${anim}`,
-              }}
-            >
-              <div style={{ position: "absolute", left: ring.radius }}>
-                <div style={{ position: "absolute", top: -half, left: -half, animation: `orbitCounterSpin ${anim}` }}>
-                  <div
-                    title={item.label}
-                    className="flex items-center justify-center rounded-full border-2 border-white/15"
-                    style={{
-                      width: sz, height: sz,
-                      fontSize: sz * 0.44,
-                      background: item.bg,
-                      boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
-                    }}
-                  >
+          {ORBIT_ITEMS.map((item) => (
+            <div key={item.className} className={`orbit-item ${item.className}`}>
+              <div className="orbit-position">
+                <div className="orbit-badge-shell">
+                  <div className="orbit-badge" title={item.label}>
                     {item.emoji}
                   </div>
                 </div>
               </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
 
-        {/* 中心圆 — 外层旋转描边 */}
-        <div
-          className="absolute z-10 flex items-center justify-center rounded-full"
-          style={{
-            width: CENTER_SIZE + 12,
-            height: CENTER_SIZE + 12,
-            background: "conic-gradient(from 0deg, #fb923c 0%, #fde68a 20%, #f97316 50%, #fbbf24 80%, #fb923c 100%)",
-            padding: "8px 2px 5px 3px",
-            animation: "borderSpin 10s linear infinite",
-            boxShadow: "0 0 50px rgba(251,146,60,0.4), 0 0 100px rgba(251,146,60,0.15)",
-          }}
-        >
-          <div
-            className="h-full w-full rounded-full"
-            style={{
-              background: "linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(241,245,249,0.98) 100%)",
-              backdropFilter: "blur(10px)",
-            }}
-          />
+        <div className="hero-core">
+          <div aria-hidden="true" className="hero-core-border" />
+          <div className="hero-core-content">
+            <p className="hero-eyebrow">{hero.eyebrow}</p>
+            <h1 className="font-fantasy text-[1.35rem] leading-[1.08] text-slate-900 sm:text-2xl lg:text-[2rem]">
+              {hero.title}
+            </h1>
+            <p className="max-w-[16rem] text-xs leading-5 text-slate-600 sm:text-sm sm:leading-6 lg:text-base">
+              {hero.summary}
+            </p>
+            <div className="hero-actions flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+              <a
+                href={hero.primaryAction.href}
+                data-track={hero.primaryAction.track}
+                className="inline-flex min-h-10 items-center rounded-full bg-orange-500 px-4 text-sm font-semibold text-white shadow-lg shadow-orange-500/20 transition hover:bg-orange-600 sm:min-h-11 sm:px-5"
+              >
+                {hero.primaryAction.label}
+              </a>
+              <Link
+                href={hero.secondaryAction.href}
+                data-track={hero.secondaryAction.track}
+                className="inline-flex min-h-10 items-center rounded-full border border-slate-300 bg-white/80 px-4 text-sm font-semibold text-slate-700 transition hover:border-orange-300 hover:text-orange-600 sm:min-h-11 sm:px-5"
+              >
+                {hero.secondaryAction.label}
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Scroll 指示器 */}
-      <div
-        className="animate-bounce absolute bottom-1 flex cursor-default select-none flex-col items-center gap-1"
-        style={{ marginTop: "16px" }}
+      <a
+        href="#blog"
+        aria-label="继续浏览博客"
+        className="animate-bounce absolute bottom-4 flex min-h-11 min-w-11 flex-col items-center justify-center gap-1 text-slate-400 transition-colors hover:text-orange-500"
       >
-        <span className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
-          Scroll
-        </span>
-        <svg
-          className="h-4 w-4 text-orange-400"
-          fill="none"
-          stroke="#fb923c"
-          viewBox="0 0 24 24"
-        >
+        <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
+        <svg aria-hidden="true" className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
-      </div>
+      </a>
     </section>
   );
 }

@@ -2,6 +2,15 @@ import RevealSection from "./RevealSection";
 
 const defaultSectionClassName = "w-full px-4 lg:px-16 xl:px-32 2xl:px-44 relative z-10 my-24 lg:my-32";
 
+/**
+ * @param {{
+ *   id: string,
+ *   title: import("react").ReactNode,
+ *   intro: import("react").ReactNode,
+ *   children?: import("react").ReactNode,
+ *   className?: string
+ * }} props
+ */
 export default function SectionShell({ id, title, intro, children, className = defaultSectionClassName }) {
   return (
     <RevealSection id={id} className={className}>

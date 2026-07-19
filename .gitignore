@@ -13,6 +13,10 @@
 # testing
 /coverage
 
+# local browser verification
+/.playwright-cli/
+/output/
+
 # next.js
 /.next/
 /out/

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getGameDisplayItems } from "../content/presentation";
 
+/** @param {{item: import("../content/schema").GameEntry}} props */
 function GamePoster({ item }) {
   if (item.cover) {
     return (
@@ -9,7 +10,7 @@ function GamePoster({ item }) {
           src={item.cover}
           alt={`${item.title} poster`}
           fill
-          sizes="(max-width: 768px) 96vw, 95vw"
+          sizes="(max-width: 767px) 96vw, (max-width: 1279px) 47vw, 31vw"
           className="object-cover"
         />
       </div>
@@ -25,6 +26,7 @@ function GamePoster({ item }) {
   );
 }
 
+/** @param {{item: import("../content/schema").GameEntry}} props */
 function GameCard({ item }) {
   return (
     <article className="game-card h-full overflow-hidden p-5 accentSoftCard md:p-6">
@@ -41,6 +43,9 @@ function GameCard({ item }) {
   );
 }
 
+/**
+ * @param {{items: import("../content/schema").GameEntry[], variant?: "home"|"archive"}} props
+ */
 export default function GameGallery({ items, variant = "home" }) {
   const displayItems = getGameDisplayItems(items, variant);
 

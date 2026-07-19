@@ -12,6 +12,7 @@ export const progress = [
   { id: "P9", name: "文档与交接", weight: 5, status: "done" },
 ];
 
+/** @param {import("./schema").ProgressPhase[]} progressPhases */
 export function calculateProgress(progressPhases) {
   return progressPhases.reduce((sum, phase) => {
     const rate = phase.status === "done" ? 1 : phase.status === "partial" ? 0.5 : 0;

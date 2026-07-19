@@ -7,7 +7,10 @@
 ```bash
 npm run dev          # 本地开发
 npm run build        # 构建
-npm run verify       # 提交前完整验证（内容+资源+结构+build）
+npm run lint         # ESLint + Next.js Core Web Vitals
+npm run typecheck    # app/** JavaScript 严格类型检查
+npm run test         # Node 行为回归测试
+npm run verify       # 提交前完整验证
 npm run check:content   # 仅验证内容质量
 npm run check:assets    # 仅验证静态资源引用
 npm run check:structure # 仅验证项目结构
@@ -26,10 +29,10 @@ npm run start        # 生产模式启动
 - **SectionShell** — 每个内容区块的通用外壳（含标题+介绍+Reveal 动画）
 - **RevealSection** — Client Component，用 framer-motion 做滚动出现动画
 - **Navbar** — 固定顶部导航 + 社交图标
-- **HeroSection** — 首页轨道旋转动画
+- **HeroSection** — 首页响应式轨道、站点定位与行动入口
 - **BlogSection** — 博客三行跑马灯（Marquee），按分类分组
 - **GameSection** / **GameGallery** — 游戏卡片网格
-- **MusicSection** / **ImagesSection** / **FavoritesSection** — 其他内容模块
+- 音乐/图片/收藏仍是轻量策展状态，由 `page.js` 直接复用 `SectionShell`
 - **SiteFooter** — 页脚
 - **SocialLinks** / **SocialIcon** — 社交链接复用组件
 - **AnalyticsBridge** — 统计埋点（兼容 Vercel Analytics / GA4 / Umami / Plausible）
@@ -43,6 +46,8 @@ npm run start        # 生产模式启动
 - `siteContent.js` — 聚合出口
 - `sections/blog.js` — 博客数据
 - `sections/game.js` — 游戏数据
+- `sections/upcoming.js` — 音乐、图片、收藏的策展状态
+- `hero.js` — Hero 定位与行动入口
 - `progress.js` — V2→V3 重构进度量化
 
 ### 验证脚本
@@ -62,6 +67,7 @@ npm run start        # 生产模式启动
 
 ## 发布流程
 ```bash
-npm run verify   # 验证通过
-git push         # 推送到 main → Vercel 自动部署
+npm run verify              # 完整门禁
+npm audit --audit-level=high
+git push                    # 推送到 main → Vercel 自动部署
 ```

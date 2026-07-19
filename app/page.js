@@ -8,48 +8,42 @@ import { siteContent } from "./content/siteContent";
 
 export default function Home() {
   return (
-    <main className="relative overflow-x-hidden">
+    <main id="main-content" className="relative overflow-x-hidden">
       <Navbar
         siteName={siteContent.site.name}
         navLinks={siteContent.navLinks}
         socialLinks={siteContent.socialLinks}
       />
 
-      <HeroSection />
+      <HeroSection hero={siteContent.hero} />
 
       <div className="w-full text-slate-700">
         <BlogSection posts={siteContent.sections.blog} />
         <GameSection items={siteContent.sections.game} />
 
-        <SectionShell
-          id="music"
-          title="音乐"
-          intro={
-            <p className="mb-8 text-xl text-slate-600">
-              这里整理了我长期收藏和反复循环的歌单与单曲。不同风格的音乐，构成了我日常最稳定的情绪背景。
-            </p>
-          }
-        />
-
-        <SectionShell
-          id="images"
-          title="图片"
-          intro={
-            <p className="mb-8 text-xl text-slate-600">
-              这里主要收藏我喜欢的壁纸、头像和高质量图片。它们不一定同一种风格，但都在视觉上打动过我。
-            </p>
-          }
-        />
-
-        <SectionShell
-          id="favorites"
-          title="收藏"
-          intro={
-            <p className="mb-8 text-xl text-slate-600">
-              分为影视和网站两大类，前者是我愿意反复回看的作品，后者是我高频使用的工具与优质资源网站。
-            </p>
-          }
-        />
+        {siteContent.sections.upcoming.map((upcoming) => (
+          <SectionShell
+            key={upcoming.id}
+            id={upcoming.id}
+            title={upcoming.title}
+            intro={
+              <div className="max-w-4xl space-y-4">
+                <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-700">
+                  {upcoming.statusLabel}
+                </span>
+                <p className="text-xl leading-9 text-slate-600">{upcoming.intro}</p>
+              </div>
+            }
+          >
+            <ul className="grid max-w-4xl gap-3 sm:grid-cols-3" aria-label={`${upcoming.title}计划主题`}>
+              {upcoming.topics.map((topic) => (
+                <li key={topic} className="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-base font-medium text-slate-700 shadow-sm">
+                  {topic}
+                </li>
+              ))}
+            </ul>
+          </SectionShell>
+        ))}
 
         <section
           id="contact"
